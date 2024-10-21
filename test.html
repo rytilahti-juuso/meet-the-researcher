@@ -261,12 +261,12 @@
             font-size: 0.9em;
             color: var(--tag-text-color);
             outline: none;
-            transition: all 0.2s ease; /* Added transition for smooth scaling and color change */
+            transition: all 0.2s ease;
         }
 
         .tag-button:hover {
             background-color: var(--tag-hover-background-color);
-            transform: scale(1.05); /* Increases size slightly on hover */
+            transform: scale(1.05);
         }
 
         .tag-button:active {
@@ -278,7 +278,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Limited the maximum width and centered */
             max-width: 800px;
             margin: 0 auto;
             width: 100%;
@@ -319,6 +318,14 @@
             border-radius: 50%;
             cursor: pointer;
             outline: none;
+            transition: background-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-container button .send-icon {
+            display: inline-block;
+            transition: transform 0.5s ease;
         }
 
         /* Hover effect for send button */
@@ -326,9 +333,17 @@
             background-color: var(--send-button-hover-background-color);
         }
 
+        .input-container button:hover .send-icon {
+            transform: rotate(360deg);
+        }
+
         /* Active effect for send button */
         .input-container button:active {
             background-color: var(--send-button-active-background-color);
+        }
+
+        .input-container button:active .send-icon {
+            transform: scale(0.9);
         }
 
         /* Animation for message appearance */
@@ -350,7 +365,6 @@
 
         /* Styling for social links message */
         .message .content.social-links {
-            /* Inherit the same styling as other messages */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -387,7 +401,6 @@
             display: flex;
             justify-content: center;
             opacity: 0;
-            /* Fade-in animation */
             animation: fadeInIcons 0.5s ease forwards;
             animation-delay: 0.5s;
         }
@@ -464,11 +477,10 @@
             <!-- Send button with onclick event -->
             <button id="send-button" onclick="sendMessage()">
                 <!-- Send icon -->
-                &#10148;
+                <span class="send-icon">&#10148;</span>
             </button>
         </div>
     </div>
-
 
     <!-- JavaScript for handling message sending and tag clicks -->
     <script>
