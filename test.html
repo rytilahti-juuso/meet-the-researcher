@@ -487,30 +487,30 @@
                 return;
             }
 
-            // Create a new message element
-            const message = document.createElement('div');
-            message.classList.add('message', 'sent', 'appear'); // Sent message with animation
-
-            // Create the content div and set its text
-            const content = document.createElement('div');
-            content.classList.add('content');
-            content.textContent = messageText;
-
-            // Append the content to the message element
-            message.appendChild(content);
-
-            // Append the message to the messages container
-            const messagesContainer = document.querySelector('.messages');
-            messagesContainer.appendChild(message);
-
-            // Scroll to the bottom to show the new message
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            // Display the user's message
+            displayUserMessage(messageText);
 
             // Clear the input field
             input.value = '';
 
-            // Placeholder for additional functionality
-            // For example, sending the message to a server or triggering a response
+            // Process the message
+            const lowerCaseMessage = messageText.toLowerCase();
+
+            // Check for keywords and display corresponding messages
+            if (lowerCaseMessage.includes('intro')) {
+                displayMessage(predefinedMessages['introduction']);
+            } else if (lowerCaseMessage.includes('research')) {
+                displayMessage(predefinedMessages['research']);
+            } else if (lowerCaseMessage.includes('project')) {
+                displayMessage(predefinedMessages['projects']);
+            } else if (lowerCaseMessage.includes('contact')) {
+                displayMessage(predefinedMessages['contact']);
+                // Display social links after typing effect
+                setTimeout(displaySocialLinks, predefinedMessages['contact'].length * 50 + 500);
+            } else {
+                // Handle unrecognized input
+                displayMessage("I'm sorry, I didn't understand that. Could you please choose a topic or type 'intro', 'research', 'project', or 'contact'?");
+            }
         }
     </script>
 </body>
