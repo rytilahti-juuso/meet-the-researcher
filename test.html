@@ -14,30 +14,106 @@
 
         /* Main chat container */
         .chat-container {
-            display: flex;
-            flex-direction: column;
+            position: relative;
             max-width: 600px;
-            height: 100vh;
             margin: 0 auto;
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
             background-color: #fff;
+            transition: padding-top 0.5s ease;
         }
 
-        /* Chat header styling */
-        .chat-header {
-            padding: 20px;
+        /* Hero Section */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            background-color: #fff;
+            transition: all 0.5s ease;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .hero-text {
+            text-align: center;
+            margin-right: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .hero-text h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin: 0;
+            transition: all 0.5s ease;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5em;
+            color: #007bff;
+            margin: 0;
+            transition: all 0.5s ease;
+        }
+
+        .hero-image img {
+            border-radius: 50%;
+            width: 250px;
+            height: 250px;
+            transition: all 0.5s ease;
+        }
+
+        /* Adjust hero section when chat is active */
+        .chat-container.active .hero-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
             background-color: #007bff;
             color: #fff;
-            text-align: center;
-            font-size: 1.5em;
+            z-index: 1000;
+        }
+
+        .chat-container.active .hero-content {
+            justify-content: flex-start;
+        }
+
+        .chat-container.active .hero-text {
+            text-align: left;
+            margin-right: 10px;
+        }
+
+        .chat-container.active .hero-text h2,
+        .chat-container.active .hero-text h1 {
+            color: #fff;
+            font-size: 1em;
+        }
+
+        .chat-container.active .hero-image img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .chat-container.active {
+            padding-top: 70px; /* Adjust to match the height of the fixed hero-section */
         }
 
         /* Messages container */
         .messages {
+            display: none;
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+        }
+
+        .chat-container.active .messages {
+            display: block;
         }
 
         /* Individual message styling */
@@ -260,9 +336,17 @@
 <body>
     <!-- Main chat container -->
     <div class="chat-container">
-        <!-- Chat header -->
-        <div class="chat-header">
-            Meet the Researcher
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2>Meet the Researcher</h2>
+                    <h1>John Doe</h1>
+                </div>
+                <div class="hero-image">
+                    <img src="https://eu.ui-avatars.com/api/?name=John+Doe&size=250" alt="John Doe">
+                </div>
+            </div>
         </div>
         <!-- Messages area -->
         <div class="messages">
@@ -457,6 +541,14 @@
             }
         }
 
+        // Function to activate chat view
+        function activateChat() {
+            const chatContainer = document.querySelector('.chat-container');
+            if (!chatContainer.classList.contains('active')) {
+                chatContainer.classList.add('active');
+            }
+        }
+
         // Add event listeners to the tag buttons
         const tagButtons = document.querySelectorAll('.tag-button');
         tagButtons.forEach(button => {
@@ -481,6 +573,9 @@
 
                 // Remove the clicked tag from the tag list
                 removeTagButton(messageKey);
+
+                // Activate the chat view with transition
+                activateChat();
             });
         });
 
@@ -499,6 +594,9 @@
 
             // Clear the input field
             input.value = '';
+
+            // Activate the chat view with transition
+            activateChat();
 
             // Process the message
             const lowerCaseMessage = messageText.toLowerCase();
