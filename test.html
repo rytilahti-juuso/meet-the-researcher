@@ -528,8 +528,9 @@
     }
 
     // Function to embed the string at the beginning of a message
-    function embedString(messageText) {
-        return "That's a great question. On a related note, " + messageText;
+    function embedString(messageText, includedQuestionMark) {
+        if(includedQuestionMark) return "That's a great question. On a related note: " + messageText;
+        else { return "I appreciate your input. Speaking of fascinating topics:" + messageText}
     }
 
     // Function to display a message with typing animation
@@ -796,7 +797,8 @@
 
                 if (nextKey) {
                     let message = predefinedMessages[nextKey];
-                    message = embedString(message);
+                    includedQuestionMark = messageText.includes("?")
+                    message = embedString(message, includedQuestionMark);
                     displayMessage(message);
                     messagesSent.add(nextKey);
                     removeTagButton(nextKey);
