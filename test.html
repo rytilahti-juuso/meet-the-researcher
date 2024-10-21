@@ -287,14 +287,16 @@
             justify-content: center;
             max-width: 800px;
             margin: 0 auto;
-            width: 100%;
+            width: auto;
+            padding-left: 0.625em;
+            padding-right: 0.625em;
         }
 
         /* Input container when chat is active */
         .chat-container.active .input-container {
             max-width: none;
             margin: 0;
-            margin-bottom: 3ch;
+            margin-bottom: 0.625em;
         }
 
         /* Input field styling */
@@ -318,11 +320,11 @@
         /* Send button styling */
         .input-container button {
             margin-left: 0.625em;
-            padding: 0.75em;
+            padding: 1em;
             border: none;
             background-color: var(--send-button-background-color);
             color: var(--send-button-text-color);
-            border-radius: 50%;
+            border-radius: 100%;
             cursor: pointer;
             outline: none;
             transition: background-color 0.2s ease;
@@ -333,6 +335,7 @@
         .input-container button .send-icon {
             display: inline-block;
             transition: transform 0.5s ease;
+            font-size: 1.5em;
         }
 
         /* Hover effect for send button */
