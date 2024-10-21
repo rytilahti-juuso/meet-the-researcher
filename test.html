@@ -201,8 +201,9 @@
             justify-content: center;
             padding: 0.625em 1.25em;
             background-color: #fff;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
+            /* Removed the border lines */
+            /* border-top: 1px solid #ddd; */
+            /* border-bottom: 1px solid #ddd; */
         }
 
         /* Tag buttons styling */
@@ -233,6 +234,16 @@
             padding: 0.625em 1.25em;
             background-color: #f5f5f5;
             border-top: 1px solid #ddd;
+            /* Limited the maximum width and centered */
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Input container when chat is active */
+        .chat-container.active .input-container {
+            max-width: none;
+            margin: 0;
         }
 
         /* Input field styling */
