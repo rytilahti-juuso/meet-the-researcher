@@ -492,7 +492,7 @@
         // Predefined messages corresponding to each tag
         const predefinedMessages = {
             introduction: "Hello! I'm AI assistant tasked with introducing doctoral researcher Juuso Rytilahti, University of Turku, Department of Computing. What would you like to know about him?",
-            research: "His primary research interests are reltaed to adaptive learning, and applying use of generative artificial intelligence, especially large language models, in teaching and programming. ",
+            research: "His primary research interests are related to adaptive learning, and applying use of generative artificial intelligence, especially large language models, in teaching and programming. ",
             projects: "Recently, his work has been focused on applying large language models in various scenarios, e.g. dynamic programming exercise generation.",
             contact: "You may contact him through various different channels. You can contact him via email me at jubery@utu.fi. He can also be found in LinkedIn."
         };
@@ -648,12 +648,12 @@
 
             // Create the SVG links
             const githubLink = document.createElement('a');
-            githubLink.href = 'https://github.com';
+            githubLink.href = 'https://github.com/rytilahti-juuso';
             githubLink.target = '_blank';
             githubLink.innerHTML = githubSVG;
 
             const linkedinLink = document.createElement('a');
-            linkedinLink.href = 'https://linkedin.com';
+            linkedinLink.href = 'https://www.linkedin.com/in/juuso-rytilahti';
             linkedinLink.target = '_blank';
             linkedinLink.innerHTML = linkedinSVG;
 
@@ -744,7 +744,11 @@
 
             // Process the message
             const lowerCaseMessage = messageText.toLowerCase();
-
+            if(lowerCaseMessage.includes("hei.") || lowerCaseMessage.includes("Hei!") || lowerCaseMessage.includes("hej.") || lowerCaseMessage.includes("hej!") 
+                || lowerCaseMessage.includes("voisit") || lowerCaseMessage.includes("voitko")){
+            displayMessage("I'm sorry. Currently, I'm only able to understand English. Could you repeat your question in English?")
+                }
+            else{ 
             let keywordFound = false;
             for (let key in predefinedMessages) {
                 if (keywordsMap[key]) {
@@ -792,9 +796,11 @@
                     }
                 } else {
                     // All messages have been sent
-                    displayMessage("We've discussed all the topics! Feel free to ask any further questions or explore the provided information.");
+                    displayMessage("We've discussed all the topics! Feel free to ask any further questions via contacting him!");
+                    displaySocialLinks()
                 }
             }
+        }
         }
     </script>
 </body>
