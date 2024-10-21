@@ -497,6 +497,32 @@
             contact: "You're welcome! Feel free to visit my lab's website at <a href='http://www.emilysmithlab.com'>www.emilysmithlab.com</a> or email me at emily.smith@abcuniversity.edu."
         };
 
+        const messageOrder = ['introduction', 'research', 'projects', 'contact'];
+        let messagesSent = new Set();
+
+        // Mapping of keywords to message keys
+        const keywordsMap = {
+            introduction: ['intro', 'introduction'],
+            research: ['research'],
+            projects: ['project', 'projects'],
+            contact: ['contact']
+        };
+
+        // Function to get the next message key in order
+        function getNextMessageKey() {
+            for (let key of messageOrder) {
+                if (!messagesSent.has(key)) {
+                    return key;
+                }
+            }
+            return null; // All messages have been sent
+        }
+
+        // Function to embed the string at the beginning of a message
+        function embedString(messageText) {
+            return "That's a great question. On a related note " + messageText;
+        }
+
         // Function to display a message with typing animation
         function displayMessage(messageText) {
             // Create a new message element
@@ -680,14 +706,17 @@
                 // Display the assistant's message with typing effect
                 displayMessage(messageText);
 
+                // Remove the clicked tag from the tag list
+                removeTagButton(messageKey);
+
+                // Add to messagesSent
+                messagesSent.add(messageKey);
+
                 // If the 'contact' tag is clicked, display the second message with SVGs
                 if (messageKey === 'contact') {
                     // Delay the display of social links until after typing animation
                     setTimeout(displaySocialLinks, messageText.length * 50 + 500);
                 }
-
-                // Remove the clicked tag from the tag list
-                removeTagButton(messageKey);
 
                 // Activate the chat view with transition
                 activateChat();
@@ -716,24 +745,55 @@
             // Process the message
             const lowerCaseMessage = messageText.toLowerCase();
 
-            // Check for keywords and display corresponding messages
-            if (lowerCaseMessage.includes('intro')) {
-                displayMessage(predefinedMessages['introduction']);
-                removeTagButton('introduction');
-            } else if (lowerCaseMessage.includes('research')) {
-                displayMessage(predefinedMessages['research']);
-                removeTagButton('research');
-            } else if (lowerCaseMessage.includes('project')) {
-                displayMessage(predefinedMessages['projects']);
-                removeTagButton('projects');
-            } else if (lowerCaseMessage.includes('contact')) {
-                displayMessage(predefinedMessages['contact']);
-                removeTagButton('contact');
-                // Display social links after typing effect
-                setTimeout(displaySocialLinks, predefinedMessages['contact'].length * 50 + 500);
-            } else {
-                // Handle unrecognized input
-                displayMessage("I'm sorry, I didn't understand that. Could you please choose a topic or type 'intro', 'research', 'project', or 'contact'?");
+            let keywordFound = false;
+            for (let key in predefinedMessages) {
+                if (keywordsMap[key]) {
+                    for (let keyword of keywordsMap[key]) {
+                        if (lowerCaseMessage.includes(keyword)) {
+                            // Keyword found
+                            keywordFound = true;
+                            if (!messagesSent.has(key)) {
+                                displayMessage(predefinedMessages[key]);
+                                messagesSent.add(key);
+                                removeTagButton(key);
+
+                                // If the 'contact' message is sent, display social links
+                                if (key === 'contact') {
+                                    setTimeout(displaySocialLinks, predefinedMessages['contact'].length * 50 + 500);
+                                }
+                            } else {
+                                // Message already sent
+                                displayMessage("We've already discussed that topic.");
+                            }
+                            break;
+                        }
+                    }
+                    if (keywordFound) {
+                        break;
+                    }
+                }
+            }
+
+            if (!keywordFound) {
+                // No keywords matched
+                // Get the next message key
+                let nextKey = getNextMessageKey();
+
+                if (nextKey) {
+                    let message = predefinedMessages[nextKey];
+                    message = embedString(message);
+                    displayMessage(message);
+                    messagesSent.add(nextKey);
+                    removeTagButton(nextKey);
+
+                    // If the 'contact' message is sent, display social links
+                    if (nextKey === 'contact') {
+                        setTimeout(displaySocialLinks, predefinedMessages['contact'].length * 50 + 500);
+                    }
+                } else {
+                    // All messages have been sent
+                    displayMessage("We've discussed all the topics! Feel free to ask any further questions or explore the provided information.");
+                }
             }
         }
     </script>
