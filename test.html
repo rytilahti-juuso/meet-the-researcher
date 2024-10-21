@@ -365,6 +365,26 @@
             }
         }
 
+        /* Interaction container styling */
+        .interaction-container {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 1.5s; /* Adjust delay as needed */
+        }
+
+        /* Adjusted animation keyframes for smoother effect */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .message.sent.appear,
         .message.received.appear {
             animation: fadeInUp 0.3s ease forwards;
@@ -469,23 +489,26 @@
         <div class="messages">
             <!-- Messages will be dynamically added here -->
         </div>
-        <!-- Tags container -->
-        <div class="tags-container">
-            <!-- Clickable tags -->
-            <button class="tag-button" data-message="introduction">Introduction</button>
-            <button class="tag-button" data-message="research">Research Interests</button>
-            <button class="tag-button" data-message="projects">Recent Work</button>
-            <button class="tag-button" data-message="contact">Contact Information</button>
-        </div>
-        <!-- Input area -->
-        <div class="input-container">
-            <!-- Text input for user's message -->
-            <input type="text" id="message-input" placeholder="Type your question about his work here...">
-            <!-- Send button with onclick event -->
-            <button id="send-button" onclick="sendMessage()">
-                <!-- Send icon -->
-                <span class="send-icon">&#10148;</span>
-            </button>
+        <!-- Interaction container with tags and input -->
+        <div class="interaction-container">
+            <!-- Tags container -->
+            <div class="tags-container">
+                <!-- Clickable tags -->
+                <button class="tag-button" data-message="introduction">Introduction</button>
+                <button class="tag-button" data-message="research">Research Interests</button>
+                <button class="tag-button" data-message="projects">Recent Work</button>
+                <button class="tag-button" data-message="contact">Contact Information</button>
+            </div>
+            <!-- Input area -->
+            <div class="input-container">
+                <!-- Text input for user's message -->
+                <input type="text" id="message-input" placeholder="Type your question about his work here...">
+                <!-- Send button with onclick event -->
+                <button id="send-button" onclick="sendMessage()">
+                    <!-- Send icon -->
+                    <span class="send-icon">&#10148;</span>
+                </button>
+            </div>
         </div>
     </div>
 
