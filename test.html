@@ -211,23 +211,25 @@
 
         /* Tag buttons styling */
         .tag-button {
-            background-color: #e9e9eb;
+            background-color: #007bff; /* Updated to match the accent color */
             border: none;
             border-radius: 1em;
             padding: 0.5em 1em;
             margin: 0.3em;
             cursor: pointer;
             font-size: 0.9em;
-            color: #333;
+            color: #fff; /* Changed text color to white for contrast */
             outline: none;
+            transition: all 0.2s ease; /* Added transition for smooth scaling and color change */
         }
 
         .tag-button:hover {
-            background-color: #d4d4d6;
+            background-color: #0056b3; /* Darker shade on hover */
+            transform: scale(1.05); /* Increases size slightly on hover */
         }
 
         .tag-button:active {
-            background-color: #bcbcc0;
+            background-color: #004085; /* Even darker shade when active */
         }
 
         /* Input container styling */
