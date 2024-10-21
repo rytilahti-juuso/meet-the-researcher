@@ -172,7 +172,8 @@
             flex-grow: 1;
             padding: 1.25em;
             overflow-y: auto;
-            width: 100ch;
+            max-width: 100ch;
+            width: 100%;
             align-self: center;
             background-color: var(--hero-background-color);
         }
@@ -217,6 +218,10 @@
             bottom: 0;
             width: 0;
             height: 0;
+        }
+
+        .message.received .content {
+            margin-right: 5ch;
         }
 
         /* Tail for received messages */
