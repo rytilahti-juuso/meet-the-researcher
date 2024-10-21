@@ -449,6 +449,14 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
+        // Function to remove a tag button
+        function removeTagButton(messageKey) {
+            const button = document.querySelector(`.tag-button[data-message="${messageKey}"]`);
+            if (button) {
+                button.parentNode.removeChild(button);
+            }
+        }
+
         // Add event listeners to the tag buttons
         const tagButtons = document.querySelectorAll('.tag-button');
         tagButtons.forEach(button => {
@@ -472,8 +480,7 @@
                 }
 
                 // Remove the clicked tag from the tag list
-                button.removeEventListener('click', handleClick); // Remove event listener
-                button.parentNode.removeChild(button); // Remove the button from DOM
+                removeTagButton(messageKey);
             });
         });
 
@@ -499,12 +506,16 @@
             // Check for keywords and display corresponding messages
             if (lowerCaseMessage.includes('intro')) {
                 displayMessage(predefinedMessages['introduction']);
+                removeTagButton('introduction');
             } else if (lowerCaseMessage.includes('research')) {
                 displayMessage(predefinedMessages['research']);
+                removeTagButton('research');
             } else if (lowerCaseMessage.includes('project')) {
                 displayMessage(predefinedMessages['projects']);
+                removeTagButton('projects');
             } else if (lowerCaseMessage.includes('contact')) {
                 displayMessage(predefinedMessages['contact']);
+                removeTagButton('contact');
                 // Display social links after typing effect
                 setTimeout(displaySocialLinks, predefinedMessages['contact'].length * 50 + 500);
             } else {
