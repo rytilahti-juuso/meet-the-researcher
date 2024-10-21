@@ -472,13 +472,13 @@
             <!-- Clickable tags -->
             <button class="tag-button" data-message="introduction">Introduction</button>
             <button class="tag-button" data-message="research">Research Interests</button>
-            <button class="tag-button" data-message="projects">Recent Projects</button>
+            <button class="tag-button" data-message="projects">Recent Work</button>
             <button class="tag-button" data-message="contact">Contact Information</button>
         </div>
         <!-- Input area -->
         <div class="input-container">
             <!-- Text input for user's message -->
-            <input type="text" id="message-input" placeholder="Type your message here...">
+            <input type="text" id="message-input" placeholder="Type your question about his work here...">
             <!-- Send button with onclick event -->
             <button id="send-button" onclick="sendMessage()">
                 <!-- Send icon -->
@@ -503,9 +503,9 @@
 
     // Mapping of keywords to message keys
     const keywordsMap = {
-        introduction: ['intro', 'introduction'],
-        research: ['research'],
-        projects: ['project', 'projects'],
+        introduction: ['intro', 'introduction', 'who '],
+        research: ['research',],
+        projects: ['project', 'projects', "work", "lately", "doing", "recent"],
         contact: ['contact']
     };
 
