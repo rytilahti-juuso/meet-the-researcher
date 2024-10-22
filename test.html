@@ -163,9 +163,10 @@
             width: 5ch;
             height: 5ch;
         }
-
-        .chat-container.active {
-            padding-top: 70px; /* Adjust to match the height of the fixed hero-section */
+        .chat-container.active .interaction-container{
+            position: sticky;
+            bottom: 0;
+            background-color: var(--hero-background-color);
         }
 
         /* Messages container */
@@ -174,14 +175,15 @@
             flex-grow: 1;
             padding: 1.25em;
             overflow-y: auto;
-            max-width: 100ch;
-            width: 100%;
             align-self: center;
             background-color: var(--hero-background-color);
+            width: 80ch;
+            max-width: 100%;
         }
 
         .chat-container.active .messages {
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Individual message styling */
@@ -194,11 +196,16 @@
         /* Sent messages align to the right */
         .message.sent {
             justify-content: flex-end;
+            justify-self: flex-end;
+        }
+        .message.received {
+            justify-content: flex-start;
+            justify-self: flex-start;
         }
 
         /* Message content styling */
         .message .content {
-            max-width: 60ch;
+            max-width: 50ch;
             width: auto;
             padding: 0.625em 0.9375em;
             border-radius: 1.25em;
@@ -248,6 +255,12 @@
 
         .message.received .content {
             margin-right: 5ch;
+            justify-self: flex-start;
+            justify-content: flex-start;
+        }
+
+        .message.received.appear{
+            justify-content: flex-start;
         }
 
         /* Tail for received messages */
@@ -309,7 +322,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            max-width: 800px;
+            max-width: 70ch;
             margin: 0 auto;
             width: auto;
             padding-left: 0.625em;
