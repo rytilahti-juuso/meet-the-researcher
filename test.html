@@ -661,7 +661,7 @@
     }
 
     // Function to display contact links after contact information
-    function displayContactLinks() {
+    function displayContactLinks(isFinalMessage) {
         // Create a new message element
         const message = document.createElement('div');
         message.classList.add('message', 'received', 'appear'); // Received message with animation
@@ -684,7 +684,7 @@
         message.style.display = 'flex';
 
         // Initialize typing effect for header
-        const headerText = "Oh, I almost forgot! Here are direct links:";
+        const headerText = isFinalMessage ? "You can contact him via email or LinkedIn:" : "Oh, I almost forgot! Here are direct links:";
         const speed = 50; // milliseconds per character
 
         typeHtml(header, headerText, speed);
@@ -949,7 +949,7 @@
         } else {
             // All messages have been sent
             displayMessage("We've discussed all the topics! Feel free to ask any further questions by contacting him!");
-            displayContactLinks();
+            displayContactLinks(true);
         }
     }
 }
