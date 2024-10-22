@@ -207,6 +207,17 @@
             position: relative;
         }
 
+        .message .content.social-links svg {
+            width: 5ch;
+            height: 5ch;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .message .content.social-links svg:hover {
+            transform: scale(1.15);
+        }
+
         /* Styling for sent messages */
         .message.sent .content {
             background-color: var(--message-sent-background-color);
