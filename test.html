@@ -840,13 +840,13 @@
 
                 // If the 'contact' tag is clicked, display the contact links
                 if (messageKey === 'contact') {
-                    await delay(500); // Add delay before displaying links
+                    await delay(1500); // Add delay before displaying links
                     await displayContactLinks();
                 }
 
                 // If the 'projects' tag is clicked, display project links
                 if (messageKey === 'projects') {
-                    await delay(500); // Add delay before displaying links
+                    await delay(1000); // Add delay before displaying links
                     await displayProjectLinks();
                 }
             });
@@ -922,13 +922,13 @@
 
                                 // If the 'contact' message is sent, display contact links
                                 if (key === 'contact') {
-                                    await delay(500); // Add delay before displaying links
+                                    await delay(1500); // Add delay before displaying links
                                     await displayContactLinks();
                                 }
 
                                 // If the 'projects' message is sent, display project links
                                 if (key === 'projects') {
-                                    await delay(500); // Add delay before displaying links
+                                    await delay(700); // Add delay before displaying links
                                     await displayProjectLinks();
                                 }
                             } else {
@@ -959,13 +959,13 @@
 
                     // If the 'contact' message is sent, display contact links
                     if (nextKey === 'contact') {
-                        await delay(500); // Add delay before displaying links
+                        await delay(1500); // Add delay before displaying links
                         await displayContactLinks();
                     }
 
                     // If the 'projects' message is sent, display project links
                     if (nextKey === 'projects') {
-                        await delay(500); // Add delay before displaying links
+                        await delay(700); // Add delay before displaying links
                         await displayProjectLinks();
                     }
                 } else {
@@ -974,7 +974,7 @@
                     await displayMessage(finalMessage);
                     // Remove all remaining tag buttons
                     removeAllTagButtons();
-                    await delay(500); // Add delay before displaying links
+                    await delay(800); // Add delay before displaying links
                     await displayContactLinks(true);
                 }
             }
