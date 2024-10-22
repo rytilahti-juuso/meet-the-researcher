@@ -205,7 +205,9 @@
             background-color: var(--message-received-background-color);
             color: var(--message-received-text-color);
             position: relative;
+            white-space: pre-wrap;
         }
+        
 
         .message .content.social-links svg {
             width: 5ch;
@@ -576,32 +578,35 @@
             return new Promise(resolve => setTimeout(resolve, ms));
         }
     
-        // Function to display a message with typing animation
-        async function displayMessage(messageText) {
-            // Create a new message element
-            const message = document.createElement('div');
-            message.classList.add('message', 'received', 'appear'); // Received message with animation
-    
-            const content = document.createElement('div');
-            content.classList.add('content');
-    
-            // Append content to message
-            message.appendChild(content);
-    
-            const messagesContainer = document.querySelector('.messages');
-            messagesContainer.appendChild(message);
-    
-            // Show the message element
-            message.style.display = 'flex';
-    
-            // Initialize typing effect
-            const speed = 35; // milliseconds per character
-    
-            await typeHtml(content, messageText, speed);
-    
-            // Scroll to the bottom
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+    // Function to display a message with typing animation
+    async function displayMessage(messageText) {
+        // Create a new message element
+        const message = document.createElement('div');
+        message.classList.add('message', 'received', 'appear'); // Received message with animation
+
+        const content = document.createElement('div');
+        content.classList.add('content');
+
+        // Replace \n with <br>
+        messageText = messageText.replace(/\n/g, '<br>');
+
+        // Append content to message
+        message.appendChild(content);
+
+        const messagesContainer = document.querySelector('.messages');
+        messagesContainer.appendChild(message);
+
+        // Show the message element
+        message.style.display = 'flex';
+
+        // Initialize typing effect
+        const speed = 35; // milliseconds per character
+
+        await typeHtml(content, messageText, speed);
+
+        // Scroll to the bottom
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
     
         // Typing function that handles HTML content
         function typeHtml(element, html, speed) {
@@ -609,62 +614,59 @@
                 let cursorPosition = 0,
                     tag = '',
                     writingTag = false,
-                    tagOpen = false,
                     tempTypeSpeed = speed;
-    
+
                 function type() {
                     if (writingTag) {
                         tag += html[cursorPosition];
-                    }
-    
-                    if (html[cursorPosition] === '<') {
-                        tempTypeSpeed = 0;
-                        writingTag = true;
-                        tag += html[cursorPosition];
-                    } else if (html[cursorPosition] === '>') {
-                        tag += html[cursorPosition];
-                        writingTag = false;
-    
-                        // Append the tag to the element
-                        element.innerHTML += tag;
-                        tag = '';
-                    } else if (writingTag) {
-                        tag += html[cursorPosition];
+                        if (html[cursorPosition] === '>') {
+                            writingTag = false;
+                            element.innerHTML += tag;
+                            tag = '';
+                        }
                     } else {
-                        element.innerHTML += html[cursorPosition];
+                        if (html[cursorPosition] === '<') {
+                            writingTag = true;
+                            tag += html[cursorPosition];
+                        } else {
+                            element.innerHTML += html[cursorPosition];
+                        }
                     }
-    
+
                     cursorPosition++;
-    
+
                     if (cursorPosition < html.length) {
                         setTimeout(type, tempTypeSpeed);
                     } else {
                         resolve(); // Typing is complete
                     }
                 }
-    
+
                 type();
             });
         }
     
-        // Function to display the user's message
+            // Function to display the user's message
         function displayUserMessage(messageText) {
             // Create a new message element
             const message = document.createElement('div');
             message.classList.add('message', 'sent', 'appear'); // Sent message with animation
-    
+
             // Create the content div and set its text
             const content = document.createElement('div');
             content.classList.add('content');
+
+            // Set white-space style
+            content.style.whiteSpace = 'pre-wrap';
             content.textContent = messageText;
-    
+
             // Append the content to the message element
             message.appendChild(content);
-    
+
             // Append the message to the messages container
             const messagesContainer = document.querySelector('.messages');
             messagesContainer.appendChild(message);
-    
+
             // Scroll to the bottom to show the new message
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
