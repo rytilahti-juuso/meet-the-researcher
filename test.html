@@ -783,23 +783,33 @@
             // Scroll to the bottom
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
-    
-        // Function to remove a tag button
-        function removeTagButton(messageKey) {
-            const button = document.querySelector(`.tag-button[data-message="${messageKey}"]`);
-            if (button) {
-                button.parentNode.removeChild(button);
-            }
-        }
+
     
         // Function to activate chat view
-        function activateChat() {
+    function activateChat() {
             const chatContainer = document.querySelector('.chat-container');
             if (!chatContainer.classList.contains('active')) {
                 chatContainer.classList.add('active');
             }
         }
+
     
+     // Function to remove a tag button
+     function removeTagButton(messageKey) {
+        const button = document.querySelector(`.tag-button[data-message="${messageKey}"]`);
+        if (button) {
+            button.parentNode.removeChild(button);
+        }
+    }
+
+        // Function to remove all tag buttons
+        function removeAllTagButtons() {
+            const buttons = document.querySelectorAll('.tag-button');
+            buttons.forEach(button => {
+                button.parentNode.removeChild(button);
+            });
+        }
+
         // Add event listeners to the tag buttons
         const tagButtons = document.querySelectorAll('.tag-button');
         tagButtons.forEach(button => {
@@ -841,50 +851,51 @@
                 }
             });
         });
-    
+
         async function sendMessage() {
             // Get the input field and its value
             const input = document.getElementById('message-input');
             const messageText = input.value.trim();
-    
+
             // If the input is empty, do nothing
             if (messageText === '') {
                 return;
             }
-    
+
             // Display the user's message
             displayUserMessage(messageText);
-    
+
             // Clear the input field
             input.value = '';
-    
+
             // Activate the chat view with transition
             activateChat();
-    
+
             // Wait for a small delay before assistant's response
             await delay(500);
-    
+
             const lowerCaseMessage = messageText.toLowerCase();
-    
+
             // Check if the message is "Hey", "Hi", or "Hello"
             if (lowerCaseMessage === 'hey' || lowerCaseMessage === 'hi' || lowerCaseMessage === 'hello' || lowerCaseMessage === 'greetings' ||
                 lowerCaseMessage === 'hey.' || lowerCaseMessage === 'hi.' || lowerCaseMessage === 'hello.' || lowerCaseMessage === 'greetings.' ||
                 lowerCaseMessage === 'hey!' || lowerCaseMessage === 'hi!' || lowerCaseMessage === 'hello!' || lowerCaseMessage === 'greetings!'
             ) {
                 const introductionMessage = predefinedMessages['introduction'];
-    
+
                 // Display the introduction message
                 await displayMessage(introductionMessage);
-    
+
                 // Remove the introduction tag button
                 removeTagButton('introduction');
-    
+
                 // Mark the introduction as sent
                 messagesSent.add('introduction');
-                
+
                 return; // Exit after handling the greeting
             }
-    
+
+            // Handle Finnish messages
             if (
                 lowerCaseMessage === 'hei' || lowerCaseMessage.includes("hei.") || lowerCaseMessage.includes("hei!") ||
                 lowerCaseMessage === 'hej' || lowerCaseMessage.includes("hej.") || lowerCaseMessage.includes("hej!") ||
@@ -894,7 +905,7 @@
                 await displayMessage("I'm sorry. Currently, I'm only able to understand English. Could you repeat your question in English?");
                 return;
             }
-    
+
             // Continue processing other messages as before
             let keywordFound = false;
             for (let key in predefinedMessages) {
@@ -903,17 +914,18 @@
                         if (lowerCaseMessage.includes(keyword)) {
                             // Keyword found
                             keywordFound = true;
+                            // Remove the tag button immediately
+                            removeTagButton(key);
                             if (!messagesSent.has(key)) {
                                 await displayMessage(predefinedMessages[key]);
                                 messagesSent.add(key);
-                                removeTagButton(key);
-    
+
                                 // If the 'contact' message is sent, display contact links
                                 if (key === 'contact') {
                                     await delay(500); // Add delay before displaying links
                                     await displayContactLinks();
                                 }
-    
+
                                 // If the 'projects' message is sent, display project links
                                 if (key === 'projects') {
                                     await delay(500); // Add delay before displaying links
@@ -931,12 +943,12 @@
                     }
                 }
             }
-    
+
             if (!keywordFound) {
                 // No keywords matched
                 // Get the next message key
                 let nextKey = getNextMessageKey();
-    
+
                 if (nextKey) {
                     let message = predefinedMessages[nextKey];
                     const includedQuestionMark = messageText.includes("?");
@@ -944,13 +956,13 @@
                     await displayMessage(message);
                     messagesSent.add(nextKey);
                     removeTagButton(nextKey);
-    
+
                     // If the 'contact' message is sent, display contact links
                     if (nextKey === 'contact') {
                         await delay(500); // Add delay before displaying links
                         await displayContactLinks();
                     }
-    
+
                     // If the 'projects' message is sent, display project links
                     if (nextKey === 'projects') {
                         await delay(500); // Add delay before displaying links
@@ -960,12 +972,14 @@
                     // All messages have been sent
                     const finalMessage = "We've discussed all the topics! Feel free to ask any further questions by contacting him!";
                     await displayMessage(finalMessage);
+                    // Remove all remaining tag buttons
+                    removeAllTagButtons();
                     await delay(500); // Add delay before displaying links
                     await displayContactLinks(true);
                 }
             }
         }
-    
+
         // Add event listener for Enter key on the input field
         const inputField = document.getElementById('message-input');
         inputField.addEventListener('keydown', function(event) {
