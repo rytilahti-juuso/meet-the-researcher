@@ -839,97 +839,106 @@
     });
 
     function sendMessage() {
-        // Get the input field and its value
-        const input = document.getElementById('message-input');
-        const messageText = input.value.trim();
+    // Get the input field and its value
+    const input = document.getElementById('message-input');
+    const messageText = input.value.trim();
 
-        // If the input is empty, do nothing
-        if (messageText === '') {
-            return;
-        }
+    // If the input is empty, do nothing
+    if (messageText === '') {
+        return;
+    }
 
-        // Display the user's message
-        displayUserMessage(messageText);
+    // Display the user's message
+    displayUserMessage(messageText);
 
-        // Clear the input field
-        input.value = '';
+    // Clear the input field
+    input.value = '';
 
-        // Activate the chat view with transition
-        activateChat();
+    // Activate the chat view with transition
+    activateChat();
 
-        // Process the message
-        const lowerCaseMessage = messageText.toLowerCase();
-        if (
-            lowerCaseMessage.includes("hei.") || lowerCaseMessage.includes("hei!") ||
-            lowerCaseMessage.includes("hej.") || lowerCaseMessage.includes("hej!") ||
-            lowerCaseMessage.includes("voisit") || lowerCaseMessage.includes("voitko")
-        ) {
-            displayMessage("I'm sorry. Currently, I'm only able to understand English. Could you repeat your question in English?");
-        } else { 
-            let keywordFound = false;
-            for (let key in predefinedMessages) {
-                if (keywordsMap[key]) {
-                    for (let keyword of keywordsMap[key]) {
-                        if (lowerCaseMessage.includes(keyword)) {
-                            // Keyword found
-                            keywordFound = true;
-                            if (!messagesSent.has(key)) {
-                                displayMessage(predefinedMessages[key]);
-                                messagesSent.add(key);
-                                removeTagButton(key);
+    const lowerCaseMessage = messageText.toLowerCase();
 
-                                // If the 'contact' message is sent, display contact links
-                                if (key === 'contact') {
-                                    setTimeout(displayContactLinks, predefinedMessages['contact'].length * 50 + 500);
-                                }
+    // Check if the message is "Hey", "Hi", or "Hello"
+    if (lowerCaseMessage === 'hey' || lowerCaseMessage === 'hi' || lowerCaseMessage === 'hello') {
+        const introductionMessage = predefinedMessages['introduction'];
 
-                                // If the 'projects' message is sent, display project links
-                                if (key === 'projects') {
-                                    setTimeout(displayProjectLinks, predefinedMessages['projects'].length * 50 + 500);
-                                }
-                            } else {
-                                // Message already sent
-                                displayMessage("We've already discussed that topic.");
-                            }
-                            break;
+        // Display the introduction message
+        displayMessage(introductionMessage);
+
+        // Remove the introduction tag button
+        removeTagButton('introduction');
+
+        // Mark the introduction as sent
+        messagesSent.add('introduction');
+        
+        return; // Exit after handling the greeting
+    }
+
+    // Continue processing other messages as before
+    let keywordFound = false;
+    for (let key in predefinedMessages) {
+        if (keywordsMap[key]) {
+            for (let keyword of keywordsMap[key]) {
+                if (lowerCaseMessage.includes(keyword)) {
+                    // Keyword found
+                    keywordFound = true;
+                    if (!messagesSent.has(key)) {
+                        displayMessage(predefinedMessages[key]);
+                        messagesSent.add(key);
+                        removeTagButton(key);
+
+                        // If the 'contact' message is sent, display contact links
+                        if (key === 'contact') {
+                            setTimeout(displayContactLinks, predefinedMessages['contact'].length * 50 + 500);
                         }
+
+                        // If the 'projects' message is sent, display project links
+                        if (key === 'projects') {
+                            setTimeout(displayProjectLinks, predefinedMessages['projects'].length * 50 + 500);
+                        }
+                    } else {
+                        // Message already sent
+                        displayMessage("We've already discussed that topic.");
                     }
-                    if (keywordFound) {
-                        break;
-                    }
+                    break;
                 }
             }
-
-            if (!keywordFound) {
-                // No keywords matched
-                // Get the next message key
-                let nextKey = getNextMessageKey();
-
-                if (nextKey) {
-                    let message = predefinedMessages[nextKey];
-                    includedQuestionMark = messageText.includes("?")
-                    message = embedString(message, includedQuestionMark);
-                    displayMessage(message);
-                    messagesSent.add(nextKey);
-                    removeTagButton(nextKey);
-
-                    // If the 'contact' message is sent, display contact links
-                    if (nextKey === 'contact') {
-                        setTimeout(displayContactLinks, message.length * 50 + 500);
-                    }
-
-                    // If the 'projects' message is sent, display project links
-                    if (nextKey === 'projects') {
-                        setTimeout(displayProjectLinks, message.length * 50 + 500);
-                    }
-                } else {
-                    // All messages have been sent
-                    displayMessage("We've discussed all the topics! Feel free to ask any further questions by contacting him!");
-                    displayContactLinks();
-                }
+            if (keywordFound) {
+                break;
             }
         }
     }
+
+    if (!keywordFound) {
+        // No keywords matched
+        // Get the next message key
+        let nextKey = getNextMessageKey();
+
+        if (nextKey) {
+            let message = predefinedMessages[nextKey];
+            includedQuestionMark = messageText.includes("?")
+            message = embedString(message, includedQuestionMark);
+            displayMessage(message);
+            messagesSent.add(nextKey);
+            removeTagButton(nextKey);
+
+            // If the 'contact' message is sent, display contact links
+            if (nextKey === 'contact') {
+                setTimeout(displayContactLinks, message.length * 50 + 500);
+            }
+
+            // If the 'projects' message is sent, display project links
+            if (nextKey === 'projects') {
+                setTimeout(displayProjectLinks, message.length * 50 + 500);
+            }
+        } else {
+            // All messages have been sent
+            displayMessage("We've discussed all the topics! Feel free to ask any further questions by contacting him!");
+            displayContactLinks();
+        }
+    }
+}
     // Add event listener for Enter key on the input field
     const inputField = document.getElementById('message-input');
     inputField.addEventListener('keydown', function(event) {
