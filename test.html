@@ -495,7 +495,7 @@
                     <h1>Juuso Rytilahti</h1>
                 </div>
                 <div class="hero-image">
-                    <img src="https://eu.ui-avatars.com/api/?name=John+Doe&size=250" alt="Juuso Rytilahti">
+                    <img src="https://eu.ui-avatars.com/api/?name=Juuso+Rytilahti&size=250" alt="Juuso Rytilahti">
                 </div>
             </div>
         </div>
@@ -568,11 +568,11 @@
     // Function to embed the string at the beginning of a message
     function embedString(messageText, includedQuestionMark) {
         if(includedQuestionMark) return "That's a great question. On a related note: " + messageText;
-        else { return "I appreciate your input. Speaking of fascinating topics:" + messageText}
+        else { return "I appreciate your input. Speaking of fascinating topics: " + messageText}
     }
 
     // Function to display a message with typing animation
-    function displayMessage(messageText) {
+    async function displayMessage(messageText) {
         // Create a new message element
         const message = document.createElement('div');
         message.classList.add('message', 'received', 'appear'); // Received message with animation
@@ -592,7 +592,7 @@
         // Initialize typing effect
         const speed = 35; // milliseconds per character
 
-        typeHtml(content, messageText, speed);
+        await typeHtml(content, messageText, speed);
 
         // Scroll to the bottom
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -600,42 +600,46 @@
 
     // Typing function that handles HTML content
     function typeHtml(element, html, speed) {
-        let cursorPosition = 0,
-            tag = '',
-            writingTag = false,
-            tagOpen = false,
-            tempTypeSpeed = speed;
+        return new Promise((resolve) => {
+            let cursorPosition = 0,
+                tag = '',
+                writingTag = false,
+                tagOpen = false,
+                tempTypeSpeed = speed;
 
-        function type() {
-            if (writingTag) {
-                tag += html[cursorPosition];
+            function type() {
+                if (writingTag) {
+                    tag += html[cursorPosition];
+                }
+
+                if (html[cursorPosition] === '<') {
+                    tempTypeSpeed = 0;
+                    writingTag = true;
+                    tag += html[cursorPosition];
+                } else if (html[cursorPosition] === '>') {
+                    tag += html[cursorPosition];
+                    writingTag = false;
+
+                    // Append the tag to the element
+                    element.innerHTML += tag;
+                    tag = '';
+                } else if (writingTag) {
+                    tag += html[cursorPosition];
+                } else {
+                    element.innerHTML += html[cursorPosition];
+                }
+
+                cursorPosition++;
+
+                if (cursorPosition < html.length) {
+                    setTimeout(type, tempTypeSpeed);
+                } else {
+                    resolve(); // Typing is complete
+                }
             }
 
-            if (html[cursorPosition] === '<') {
-                tempTypeSpeed = 0;
-                writingTag = true;
-                tag += html[cursorPosition];
-            } else if (html[cursorPosition] === '>') {
-                tag += html[cursorPosition];
-                writingTag = false;
-
-                // Append the tag to the element
-                element.innerHTML += tag;
-                tag = '';
-            } else if (writingTag) {
-                tag += html[cursorPosition];
-            } else {
-                element.innerHTML += html[cursorPosition];
-            }
-
-            cursorPosition++;
-
-            if (cursorPosition < html.length) {
-                setTimeout(type, tempTypeSpeed);
-            }
-        }
-
-        type();
+            type();
+        });
     }
 
     // Function to display the user's message
@@ -661,7 +665,7 @@
     }
 
     // Function to display contact links after contact information
-    function displayContactLinks(isFinalMessage) {
+    async function displayContactLinks(isFinalMessage) {
         // Create a new message element
         const message = document.createElement('div');
         message.classList.add('message', 'received', 'appear'); // Received message with animation
@@ -687,7 +691,7 @@
         const headerText = isFinalMessage ? "You can contact him via email or LinkedIn:" : "Oh, I almost forgot! Here are direct links:";
         const speed = 50; // milliseconds per character
 
-        typeHtml(header, headerText, speed);
+        await typeHtml(header, headerText, speed);
 
         // SVG code for Email and LinkedIn icons
         const emailSVG = `<svg enable-background="new 0 0 1024 1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><circle cx="512" cy="512" fill="#0081bf" r="512"/><path d="m690.7 307.8h-357.4c-42.3 0-76.6 34.3-76.6 76.6v255.3c0 42.3 34.3 76.6 76.6 76.6h357.4c42.3 0 76.6-34.3 76.6-76.6v-255.4c0-42.3-34.3-76.5-76.6-76.5zm-10.4 51-150.2 150.1c-9.9 10-26.1 10.1-36.1.1 0 0-.1-.1-.1-.1l-150.2-150.1zm36 280.9c0 14.1-11.4 25.5-25.5 25.5h-357.5c-14.1 0-25.5-11.4-25.5-25.5v-244.9l150.1 150.1c29.9 29.9 78.3 29.9 108.3 0l150.1-150.1z" fill="#fff"/></svg>`;
@@ -711,18 +715,14 @@
         iconsContainer.appendChild(linkedinLink);
 
         // Append the icons after the header typing effect
-        setTimeout(() => {
-            content.appendChild(iconsContainer);
-            // Scroll to the bottom
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }, headerText.length * speed + 500);
+        content.appendChild(iconsContainer);
 
         // Scroll to the bottom
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     // Function to display project links after recent work
-    function displayProjectLinks() {
+    async function displayProjectLinks() {
         // Create a new message element
         const message = document.createElement('div');
         message.classList.add('message', 'received', 'appear'); // Received message with animation
@@ -748,7 +748,7 @@
         const headerText = "You can see his recent work on:";
         const speed = 50; // milliseconds per character
 
-        typeHtml(header, headerText, speed);
+        await typeHtml(header, headerText, speed);
 
         // SVG code for GitHub and ORCID icons
         const githubSVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57 4.801-1.574 8.236-6.074 8.236-11.369 0-6.627-5.373-12-12-12"/></svg>`;
@@ -756,7 +756,6 @@
         const orcidSVG = `<svg enable-background="new 0 0 1024 1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><circle cx="512" cy="512" fill="#a6ce39" r="512"/><g fill="#fff"><path d="m373.7 709.3h-50.4v-350.8h50.4v158.5z"/><path d="m447.7 358.5h136.2c129.7 0 186.7 92.7 186.7 175.5 0 90.1-70.4 175.5-186 175.5h-136.9zm50.4 305.6h80.2c114.3 0 140.5-86.8 140.5-130 0-70.4-44.9-130-143.1-130h-77.6z"/><path d="m381.6 285.5c0 18-14.7 33.1-33.1 33.1-18.3 0-33.1-15.1-33.1-33.1 0-18.3 14.7-33.1 33.1-33.1 18.3 0 33.1 15.1 33.1 33.1z"/></g></svg>`;
 
         // Create the SVG links
-        
         const orcidLink = document.createElement('a');
         orcidLink.href = 'https://orcid.org/0009-0002-8269-5645';
         orcidLink.target = '_blank';
@@ -774,11 +773,7 @@
         iconsContainer.appendChild(githubLink);
 
         // Append the icons after the header typing effect
-        setTimeout(() => {
-            content.appendChild(iconsContainer);
-            // Scroll to the bottom
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }, headerText.length * speed + 500);
+        content.appendChild(iconsContainer);
 
         // Scroll to the bottom
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -803,7 +798,7 @@
     // Add event listeners to the tag buttons
     const tagButtons = document.querySelectorAll('.tag-button');
     tagButtons.forEach(button => {
-        button.addEventListener('click', function handleClick() {
+        button.addEventListener('click', async function handleClick() {
             const messageKey = button.getAttribute('data-message');
             const messageText = predefinedMessages[messageKey];
 
@@ -813,8 +808,11 @@
             // Display the user's message bubble
             displayUserMessage(userMessageText);
 
+            // Activate the chat view with transition
+            activateChat();
+
             // Display the assistant's message with typing effect
-            displayMessage(messageText);
+            await displayMessage(messageText);
 
             // Remove the clicked tag from the tag list
             removeTagButton(messageKey);
@@ -824,136 +822,132 @@
 
             // If the 'contact' tag is clicked, display the contact links
             if (messageKey === 'contact') {
-                // Delay the display of contact links until after typing animation
-                setTimeout(displayContactLinks, messageText.length * 50 + 500);
+                await displayContactLinks();
             }
 
-            // If the 'projects' tag is clicked, display the project links
+            // If the 'projects' tag is clicked, display project links
             if (messageKey === 'projects') {
-                setTimeout(displayProjectLinks, messageText.length * 50 + 500);
+                await displayProjectLinks();
             }
-
-            // Activate the chat view with transition
-            activateChat();
         });
     });
 
-    function sendMessage() {
-    // Get the input field and its value
-    const input = document.getElementById('message-input');
-    const messageText = input.value.trim();
+    async function sendMessage() {
+        // Get the input field and its value
+        const input = document.getElementById('message-input');
+        const messageText = input.value.trim();
 
-    // If the input is empty, do nothing
-    if (messageText === '') {
-        return;
-    }
+        // If the input is empty, do nothing
+        if (messageText === '') {
+            return;
+        }
 
-    // Display the user's message
-    displayUserMessage(messageText);
+        // Display the user's message
+        displayUserMessage(messageText);
 
-    // Clear the input field
-    input.value = '';
+        // Clear the input field
+        input.value = '';
 
-    // Activate the chat view with transition
-    activateChat();
+        // Activate the chat view with transition
+        activateChat();
 
-    const lowerCaseMessage = messageText.toLowerCase();
+        const lowerCaseMessage = messageText.toLowerCase();
 
-    // Check if the message is "Hey", "Hi", or "Hello"
-    if (lowerCaseMessage === 'hey' || lowerCaseMessage === 'hi' || lowerCaseMessage === 'hello' || lowerCaseMessage === 'greetings' ||
-        lowerCaseMessage === 'hey.' || lowerCaseMessage === 'hi.' || lowerCaseMessage === 'hello.' || lowerCaseMessage === 'greetings.' ||
-        lowerCaseMessage === 'hey!' || lowerCaseMessage === 'hi!' || lowerCaseMessage === 'hello!' || lowerCaseMessage === 'greetings!'
-    ) {
-        const introductionMessage = predefinedMessages['introduction'];
+        // Check if the message is "Hey", "Hi", or "Hello"
+        if (lowerCaseMessage === 'hey' || lowerCaseMessage === 'hi' || lowerCaseMessage === 'hello' || lowerCaseMessage === 'greetings' ||
+            lowerCaseMessage === 'hey.' || lowerCaseMessage === 'hi.' || lowerCaseMessage === 'hello.' || lowerCaseMessage === 'greetings.' ||
+            lowerCaseMessage === 'hey!' || lowerCaseMessage === 'hi!' || lowerCaseMessage === 'hello!' || lowerCaseMessage === 'greetings!'
+        ) {
+            const introductionMessage = predefinedMessages['introduction'];
 
-        // Display the introduction message
-        displayMessage(introductionMessage);
+            // Display the introduction message
+            await displayMessage(introductionMessage);
 
-        // Remove the introduction tag button
-        removeTagButton('introduction');
+            // Remove the introduction tag button
+            removeTagButton('introduction');
 
-        // Mark the introduction as sent
-        messagesSent.add('introduction');
-        
-        return; // Exit after handling the greeting
-    }
+            // Mark the introduction as sent
+            messagesSent.add('introduction');
+            
+            return; // Exit after handling the greeting
+        }
 
+        if (
+            lowerCaseMessage === 'hei' || lowerCaseMessage.includes("hei.") || lowerCaseMessage.includes("hei!") ||
+            lowerCaseMessage === 'hej' || lowerCaseMessage.includes("hej.") || lowerCaseMessage.includes("hej!") ||
+            lowerCaseMessage === 'moi' || lowerCaseMessage.includes("moi.") || lowerCaseMessage.includes("moi!") ||
+            lowerCaseMessage.includes("voisit") || lowerCaseMessage.includes("voitko")
+        ) {
+            await displayMessage("I'm sorry. Currently, I'm only able to understand English. Could you repeat your question in English?");
+            return;
+        }
 
-    if (
-        lowerCaseMessage === 'hei' || lowerCaseMessage.includes("hei.") || lowerCaseMessage.includes("hei!") ||
-        lowerCaseMessage === 'hej' || lowerCaseMessage.includes("hej.") || lowerCaseMessage.includes("hej!") ||
-        lowerCaseMessage === 'moi' || lowerCaseMessage.includes("moi.") || lowerCaseMessage.includes("moi!") ||
-        lowerCaseMessage.includes("voisit") || lowerCaseMessage.includes("voitko")
-    ) {
-        displayMessage("I'm sorry. Currently, I'm only able to understand English. Could you repeat your question in English?");
-        return
-    }
+        // Continue processing other messages as before
+        let keywordFound = false;
+        for (let key in predefinedMessages) {
+            if (keywordsMap[key]) {
+                for (let keyword of keywordsMap[key]) {
+                    if (lowerCaseMessage.includes(keyword)) {
+                        // Keyword found
+                        keywordFound = true;
+                        if (!messagesSent.has(key)) {
+                            await displayMessage(predefinedMessages[key]);
+                            messagesSent.add(key);
+                            removeTagButton(key);
 
-    // Continue processing other messages as before
-    let keywordFound = false;
-    for (let key in predefinedMessages) {
-        if (keywordsMap[key]) {
-            for (let keyword of keywordsMap[key]) {
-                if (lowerCaseMessage.includes(keyword)) {
-                    // Keyword found
-                    keywordFound = true;
-                    if (!messagesSent.has(key)) {
-                        displayMessage(predefinedMessages[key]);
-                        messagesSent.add(key);
-                        removeTagButton(key);
+                            // If the 'contact' message is sent, display contact links
+                            if (key === 'contact') {
+                                await displayContactLinks();
+                            }
 
-                        // If the 'contact' message is sent, display contact links
-                        if (key === 'contact') {
-                            setTimeout(displayContactLinks, predefinedMessages['contact'].length * 50 + 500);
+                            // If the 'projects' message is sent, display project links
+                            if (key === 'projects') {
+                                await displayProjectLinks();
+                            }
+                        } else {
+                            // Message already sent
+                            await displayMessage("We've already discussed that topic.");
                         }
-
-                        // If the 'projects' message is sent, display project links
-                        if (key === 'projects') {
-                            setTimeout(displayProjectLinks, predefinedMessages['projects'].length * 50 + 500);
-                        }
-                    } else {
-                        // Message already sent
-                        displayMessage("We've already discussed that topic.");
+                        break;
                     }
+                }
+                if (keywordFound) {
                     break;
                 }
             }
-            if (keywordFound) {
-                break;
+        }
+
+        if (!keywordFound) {
+            // No keywords matched
+            // Get the next message key
+            let nextKey = getNextMessageKey();
+
+            if (nextKey) {
+                let message = predefinedMessages[nextKey];
+                const includedQuestionMark = messageText.includes("?");
+                message = embedString(message, includedQuestionMark);
+                await displayMessage(message);
+                messagesSent.add(nextKey);
+                removeTagButton(nextKey);
+
+                // If the 'contact' message is sent, display contact links
+                if (nextKey === 'contact') {
+                    await displayContactLinks();
+                }
+
+                // If the 'projects' message is sent, display project links
+                if (nextKey === 'projects') {
+                    await displayProjectLinks();
+                }
+            } else {
+                // All messages have been sent
+                const finalMessage = "We've discussed all the topics! Feel free to ask any further questions by contacting him!";
+                await displayMessage(finalMessage);
+                await displayContactLinks(true);
             }
         }
     }
 
-    if (!keywordFound) {
-        // No keywords matched
-        // Get the next message key
-        let nextKey = getNextMessageKey();
-
-        if (nextKey) {
-            let message = predefinedMessages[nextKey];
-            includedQuestionMark = messageText.includes("?")
-            message = embedString(message, includedQuestionMark);
-            displayMessage(message);
-            messagesSent.add(nextKey);
-            removeTagButton(nextKey);
-
-            // If the 'contact' message is sent, display contact links
-            if (nextKey === 'contact') {
-                setTimeout(displayContactLinks, message.length * 50 + 500);
-            }
-
-            // If the 'projects' message is sent, display project links
-            if (nextKey === 'projects') {
-                setTimeout(displayProjectLinks, message.length * 50 + 500);
-            }
-        } else {
-            // All messages have been sent
-            const finalMessage = "We've discussed all the topics! Feel free to ask any further questions by contacting him!"
-            displayMessage(finalMessage);
-            setTimeout(() => displayContactLinks(true), finalMessage.length * 50 + 500);
-        }
-    }
-}
     // Add event listener for Enter key on the input field
     const inputField = document.getElementById('message-input');
     inputField.addEventListener('keydown', function(event) {
