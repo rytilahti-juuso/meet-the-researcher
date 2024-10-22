@@ -645,9 +645,11 @@
             await typeHtml(content, messageText, speed);
 
             // Scroll to bottom after the message is fully displayed
-            setTimeout(() => {
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 0);
+            if (isAtBottom) {
+                setTimeout(() => {
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 0);
+            }
         }
 
         // Improved typing function that handles HTML content
