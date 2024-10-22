@@ -881,7 +881,23 @@
         function activateChat() {
             const chatContainer = document.querySelector('.chat-container');
             if (!chatContainer.classList.contains('active')) {
+                chatContainer.addEventListener('transitionend', () => {
+                    const heroSection = document.querySelector('.hero-section');
+                    const heroHeight = heroSection.offsetHeight;
+                    // Set the padding-top of the chat-container
+                    chatContainer.style.paddingTop = heroHeight + 'px';
+                });          
                 chatContainer.classList.add('active');
+            }
+        }
+
+        function deactivateChat() {
+            const chatContainer = document.querySelector('.chat-container');
+            if (chatContainer.classList.contains('active')) {
+                chatContainer.classList.remove('active');
+
+                // Reset the padding-top of the chat-container
+                chatContainer.style.paddingTop = '';
             }
         }
     
