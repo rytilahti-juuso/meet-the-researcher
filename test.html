@@ -66,11 +66,9 @@
         .chat-container {
             flex-grow: 1;
             display: flex;
-            justify-content: center;
             flex-direction: column;
             position: relative;
             max-width: 100%;
-            overflow-y: auto;
             margin: 0;
             background-color: var(--hero-background-color);
             transition: padding-top 0.5s ease;
@@ -164,6 +162,7 @@
             width: 5ch;
             height: 5ch;
         }
+
         .chat-container.active .interaction-container{
             position: sticky;
             bottom: 0;
@@ -172,8 +171,9 @@
 
         /* Messages container */
         .messages {
-            display: none;
             flex-grow: 1;
+            overflow-y: auto;
+            display: none;
             padding: 1.25em;
             align-self: center;
             background-color: var(--hero-background-color);
@@ -184,6 +184,11 @@
         .chat-container.active .messages {
             display: flex;
             flex-direction: column;
+        }
+
+        /* Adjust messages padding when hero is fixed */
+        .chat-container.active .messages {
+            padding-top: 6em; /* Adjust this value to match the fixed hero section's height */
         }
 
         /* Individual message styling */
@@ -584,13 +589,13 @@
         // Variable to track if the user is at the bottom
         let isAtBottom = true;
 
-        // Get the chat container
-        const chatContainer = document.querySelector('.chat-container');
+        // Get the messages container
+        const messagesContainer = document.querySelector('.messages');
 
         // Scroll event listener to update isAtBottom
-        chatContainer.addEventListener('scroll', function() {
+        messagesContainer.addEventListener('scroll', function() {
             const scrollThreshold = 20; // Adjust threshold as needed
-            if (chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight <= scrollThreshold) {
+            if (messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight <= scrollThreshold) {
                 isAtBottom = true;
             } else {
                 isAtBottom = false;
@@ -633,7 +638,6 @@
             // Append content to message
             message.appendChild(content);
 
-            const messagesContainer = document.querySelector('.messages');
             messagesContainer.appendChild(message);
 
             // Show the message element
@@ -647,7 +651,7 @@
             // Scroll to bottom after the message is fully displayed
             if (isAtBottom) {
                 setTimeout(() => {
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }, 0);
             }
         }
@@ -684,7 +688,7 @@
                         element.appendChild(newNode);
                         if (isAtBottom) {
                             setTimeout(() => {
-                                chatContainer.scrollTop = chatContainer.scrollHeight;
+                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
                             }, 0);
                         }
 
@@ -715,7 +719,7 @@
                         parentElement.appendChild(document.createTextNode(text[index]));
                         if (isAtBottom) {
                             setTimeout(() => {
-                                chatContainer.scrollTop = chatContainer.scrollHeight;
+                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
                             }, 0);
                         }
                         index++;
@@ -785,12 +789,11 @@
             message.appendChild(content);
 
             // Append the message to the messages container
-            const messagesContainer = document.querySelector('.messages');
             messagesContainer.appendChild(message);
 
             // Scroll to the bottom to show the new message
             setTimeout(() => {
-                chatContainer.scrollTop = chatContainer.scrollHeight;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }, 0);
         }
 
@@ -811,7 +814,6 @@
             // Append content to message
             message.appendChild(content);
 
-            const messagesContainer = document.querySelector('.messages');
             messagesContainer.appendChild(message);
 
             // Show the message element
@@ -850,7 +852,7 @@
             // Scroll to the bottom if user is at the bottom
             if (isAtBottom) {
                 setTimeout(() => {
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }, 0);
             }
         }
@@ -872,7 +874,6 @@
             // Append content to message
             message.appendChild(content);
 
-            const messagesContainer = document.querySelector('.messages');
             messagesContainer.appendChild(message);
 
             // Show the message element
@@ -912,7 +913,7 @@
             // Scroll to the bottom if user is at the bottom
             if (isAtBottom) {
                 setTimeout(() => {
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }, 0);
             }
         }
@@ -921,12 +922,6 @@
         function activateChat() {
             const chatContainer = document.querySelector('.chat-container');
             if (!chatContainer.classList.contains('active')) {
-                chatContainer.addEventListener('transitionend', () => {
-                    const heroSection = document.querySelector('.hero-section');
-                    const heroHeight = heroSection.offsetHeight;
-                    // Set the padding-top of the chat-container
-                    chatContainer.style.paddingTop = heroHeight + 'px';
-                });          
                 chatContainer.classList.add('active');
             }
         }
@@ -935,9 +930,8 @@
             const chatContainer = document.querySelector('.chat-container');
             if (chatContainer.classList.contains('active')) {
                 chatContainer.classList.remove('active');
-
-                // Reset the padding-top of the chat-container
-                chatContainer.style.paddingTop = '';
+                // Reset the padding-top of the messages container
+                messagesContainer.style.paddingTop = '';
             }
         }
 
