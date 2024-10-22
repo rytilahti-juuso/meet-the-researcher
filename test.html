@@ -948,8 +948,9 @@
             }
         } else {
             // All messages have been sent
-            displayMessage("We've discussed all the topics! Feel free to ask any further questions by contacting him!");
-            displayContactLinks(true);
+            const finalMessage = "We've discussed all the topics! Feel free to ask any further questions by contacting him!"
+            displayMessage(finalMessage);
+            setTimeout(() => displayContactLinks(true), finalMessage.length * 50 + 500);
         }
     }
 }
