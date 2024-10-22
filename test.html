@@ -926,12 +926,13 @@
     
                 // Get the more appropriate user message
                 const userMessageText = userMessages[messageKey];
+                
+                removeTagButton(messageKey);
     
                 // Display the user's message bubble
                 displayUserMessage(userMessageText);
     
                 // Remove the clicked tag from the tag list immediately
-                removeTagButton(messageKey);
     
                 // Activate the chat view with transition
                 activateChat();
@@ -986,12 +987,13 @@
             // Check if the message is "Hey", "Hi", or "Hello"
             if (['hey', 'hi', 'hello', 'greetings', 'hey.', 'hi.', 'hello.', 'greetings.', 'hey!', 'hi!', 'hello!', 'greetings!'].includes(lowerCaseMessage)) {
                 const introductionMessage = predefinedMessages['introduction'];
+                
+                removeTagButton('introduction');
     
                 // Display the introduction message
                 await displayMessage(introductionMessage);
     
                 // Remove the introduction tag button
-                removeTagButton('introduction');
     
                 // Mark the introduction as sent
                 messagesSent.add('introduction');
@@ -1056,10 +1058,10 @@
                 if (nextKey) {
                     let message = predefinedMessages[nextKey];
                     const includedQuestionMark = messageText.includes("?");
+                    removeTagButton(nextKey);
                     message = embedString(message, includedQuestionMark);
                     await displayMessage(message);
                     messagesSent.add(nextKey);
-                    removeTagButton(nextKey);
     
                     // If the 'contact' message is sent, display contact links
                     if (nextKey === 'contact') {
