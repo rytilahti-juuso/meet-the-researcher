@@ -532,8 +532,8 @@
     const predefinedMessages = {
         introduction: "Hello! I'm AI assistant tasked with introducing doctoral researcher Juuso Rytilahti, University of Turku, Department of Computing. What would you like to know about him?",
         research: "His primary research interests are related to adaptive learning, and applying use of generative artificial intelligence, especially large language models, in teaching and programming.",
-        projects: "Recently, his work has been focused on applying large language models in various scenarios, e.g., dynamic programming exercise generation.",
-        contact: "You may contact him through various different channels. You can contact him via email at jubery@utu.fi. He can also be found on LinkedIn."
+        projects: `Recently, his work has been focused on applying large language models in various scenarios, e.g., dynamic programming exercise generation. \n\n\n He also held presentation about utiliziation of LLMs in programming and education in EnnakointiAkatemia (slides available at \n"https://ennakointiakatemia.fi/wp-content/uploads/2024/08/Laajojen-kielimallien-kaytto-opetuksessa-ja-ohjelmoinnissa_Rytilahti.pdf", unfortunately slides are only  in Finnish.)`,
+        contact: "You may contact via email at jubery@utu.fi or LinkedIn."
     };
 
     const messageOrder = ['introduction', 'research', 'projects', 'contact'];
@@ -684,7 +684,7 @@
         message.style.display = 'flex';
 
         // Initialize typing effect for header
-        const headerText = "You may contact him via:";
+        const headerText = "Oh, I almost forgot! Here are direct links:";
         const speed = 50; // milliseconds per character
 
         typeHtml(header, headerText, speed);
