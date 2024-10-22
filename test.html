@@ -985,18 +985,19 @@
             const lowerCaseMessage = messageText.toLowerCase();
     
             // Check if the message is "Hey", "Hi", or "Hello"
-            if (['hey', 'hi', 'hello', 'greetings', 'hey.', 'hi.', 'hello.', 'greetings.', 'hey!', 'hi!', 'hello!', 'greetings!'].includes(lowerCaseMessage)) {
+            if (['hey', 'hi', 'hello', 'greetings', 'hey.', 'hi.', 'hello.', 'greetings.', 'hey!', 'hi!', 'hello!', 'greetings!'].includes(lowerCaseMessage)
+                && !messagesSent.has('introduction')) {
                 const introductionMessage = predefinedMessages['introduction'];
+                // Mark the introduction as sent
+                messagesSent.add('introduction');
                 
+                // Remove the introduction tag button
                 removeTagButton('introduction');
-    
+                
                 // Display the introduction message
                 await displayMessage(introductionMessage);
     
-                // Remove the introduction tag button
     
-                // Mark the introduction as sent
-                messagesSent.add('introduction');
     
                 return; // Exit after handling the greeting
             }
