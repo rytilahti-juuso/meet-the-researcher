@@ -71,7 +71,6 @@
             max-width: 100%;
             margin: 0;
             background-color: var(--hero-background-color);
-            transition: padding-top 0.5s ease;
         }
 
         /* Hero Section */
@@ -81,7 +80,7 @@
             align-items: center;
             justify-content: center;
             padding: 3.125em 1.25em;
-            padding-top:0;
+            padding-top: 0;
             background-color: var(--hero-background-color);
             transition: all 0.5s ease;
         }
@@ -163,10 +162,14 @@
             height: 5ch;
         }
 
-        .chat-container.active .interaction-container{
-            position: sticky;
+        /* Interaction container when chat is active */
+        .chat-container.active .interaction-container {
+            position: fixed;
             bottom: 0;
+            left: 0;
+            width: 100%;
             background-color: var(--hero-background-color);
+            z-index: 1000;
         }
 
         /* Messages container */
@@ -184,11 +187,9 @@
         .chat-container.active .messages {
             display: flex;
             flex-direction: column;
-        }
-
-        /* Adjust messages padding when hero is fixed */
-        .chat-container.active .messages {
-            padding-top: 6em; /* Adjust this value to match the fixed hero section's height */
+            /* Adjust height to fit between hero and interaction containers */
+            margin-top: calc(5em + 1.25em); /* Height of fixed hero-section + padding */
+            margin-bottom: calc(5em + 1.25em); /* Height of interaction-container + padding */
         }
 
         /* Individual message styling */
@@ -230,7 +231,6 @@
         .message.sent .content a {
             color: var(--message-sent-text-color);
         }
-        
 
         .message .content.social-links svg {
             width: 5ch;
@@ -238,7 +238,7 @@
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-        
+
         .message .content.social-links svg:hover {
             transform: scale(1.15);
         }
@@ -931,7 +931,8 @@
             if (chatContainer.classList.contains('active')) {
                 chatContainer.classList.remove('active');
                 // Reset the padding-top of the messages container
-                messagesContainer.style.paddingTop = '';
+                messagesContainer.style.marginTop = '';
+                messagesContainer.style.marginBottom = '';
             }
         }
 
