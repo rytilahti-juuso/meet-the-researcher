@@ -860,7 +860,10 @@
     const lowerCaseMessage = messageText.toLowerCase();
 
     // Check if the message is "Hey", "Hi", or "Hello"
-    if (lowerCaseMessage === 'hey' || lowerCaseMessage === 'hi' || lowerCaseMessage === 'hello') {
+    if (lowerCaseMessage === 'hey' || lowerCaseMessage === 'hi' || lowerCaseMessage === 'hello' || lowerCaseMessage === 'greetings' ||
+        lowerCaseMessage === 'hey.' || lowerCaseMessage === 'hi.' || lowerCaseMessage === 'hello.' || lowerCaseMessage === 'greetings.' ||
+        lowerCaseMessage === 'hey!' || lowerCaseMessage === 'hi!' || lowerCaseMessage === 'hello!' || lowerCaseMessage === 'greetings!'
+    ) {
         const introductionMessage = predefinedMessages['introduction'];
 
         // Display the introduction message
@@ -873,6 +876,17 @@
         messagesSent.add('introduction');
         
         return; // Exit after handling the greeting
+    }
+
+
+    if (
+        lowerCaseMessage === 'hei' || lowerCaseMessage.includes("hei.") || lowerCaseMessage.includes("hei!") ||
+        lowerCaseMessage === 'hej' || lowerCaseMessage.includes("hej.") || lowerCaseMessage.includes("hej!") ||
+        lowerCaseMessage === 'moi' || lowerCaseMessage.includes("moi.") || lowerCaseMessage.includes("moi!") ||
+        lowerCaseMessage.includes("voisit") || lowerCaseMessage.includes("voitko")
+    ) {
+        displayMessage("I'm sorry. Currently, I'm only able to understand English. Could you repeat your question in English?");
+        return
     }
 
     // Continue processing other messages as before
