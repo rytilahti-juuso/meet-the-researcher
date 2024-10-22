@@ -806,34 +806,34 @@
             button.addEventListener('click', async function handleClick() {
                 const messageKey = button.getAttribute('data-message');
                 const messageText = predefinedMessages[messageKey];
-    
+
                 // Get the more appropriate user message
                 const userMessageText = userMessages[messageKey];
-    
+
                 // Display the user's message bubble
                 displayUserMessage(userMessageText);
-    
+
+                // Remove the clicked tag from the tag list immediately
+                removeTagButton(messageKey);
+
                 // Activate the chat view with transition
                 activateChat();
-    
+
                 // Wait for a small delay before assistant's message
                 await delay(500);
-    
+
                 // Display the assistant's message with typing effect
                 await displayMessage(messageText);
-    
-                // Remove the clicked tag from the tag list
-                removeTagButton(messageKey);
-    
+
                 // Add to messagesSent
                 messagesSent.add(messageKey);
-    
+
                 // If the 'contact' tag is clicked, display the contact links
                 if (messageKey === 'contact') {
                     await delay(500); // Add delay before displaying links
                     await displayContactLinks();
                 }
-    
+
                 // If the 'projects' tag is clicked, display project links
                 if (messageKey === 'projects') {
                     await delay(500); // Add delay before displaying links
