@@ -755,8 +755,14 @@
                                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
                             }, 0);
                         }
-                        index++;
-                        setTimeout(typeChar, speed);
+                        // Check if the current character is "!"
+                        if (text[index] === '!') {
+                            index++;
+                            setTimeout(typeChar, 300); // Delay of 0.5 seconds after "!"
+                        } else {
+                            index++;
+                            setTimeout(typeChar, speed);
+                        }
                     } else {
                         resolve();
                     }
