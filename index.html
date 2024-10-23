@@ -599,10 +599,10 @@
     <script>
         // Predefined messages corresponding to each tag
         const predefinedMessages = {
-            introduction: "Hello! I'm an AI assistant. I'm tasked with introducing doctoral researcher Juuso Rytilahti from the University of Turku, Department of Computing.\n\nWhat would you like to know about him?",
-            research: "His primary research interests include adaptive learning and the application of generative artificial intelligence, particularly large language models, in teaching and programming.",
-            projects: `Recently, he has focused on using large language models in various scenarios, such as generating dynamic programming exercises.<br><br>He also gave a presentation on the utilization of LLMs in programming and education at EnnakointiAkatemia (slides available <a href="https://ennakointiakatemia.fi/wp-content/uploads/2024/08/Laajojen-kielimallien-kaytto-opetuksessa-ja-ohjelmoinnissa_Rytilahti.pdf" target="_blank">here</a>. Unfortunately, the slides are only available in Finnish.)\n\n You might also be interested in exploring AI tools for education, which can be found on <a href="https://gitlab.utu.fi/tech/soft/tools/edu-ai-tools" target="_blank">edu-ai-tools</a>.`,
-            contact: "You can contact him via email at jubery@utu.fi or through LinkedIn."
+            introduction: "Hello! I'm the virtual avatar of Juuso Rytilahti, a doctoral researcher at the Department of Computing, University of Turku. I'm here to help you learn more about his work.\n\nWhat would you like to know?",
+            research: "My primary research interests include adaptive learning and the application of generative artificial intelligence, particularly large language models, in teaching and programming.",
+            projects: `Recently, I've been focused on using large language models in various scenarios, such as generating dynamic programming exercises.<br><br>I also gave a presentation on the utilization of LLMs in programming and education at EnnakointiAkatemia (slides available <a href="https://ennakointiakatemia.fi/wp-content/uploads/2024/08/Laajojen-kielimallien-kaytto-opetuksessa-ja-ohjelmoinnissa_Rytilahti.pdf" target="_blank">here</a>. Unfortunately, the slides are only available in Finnish.)\n\n You might also be interested in exploring AI tools for education, which can be found on <a href="https://gitlab.utu.fi/tech/soft/tools/edu-ai-tools" target="_blank">edu-ai-tools</a>.`,
+            contact: "You can contact me via email at jubery@utu.fi or through LinkedIn."
         };
 
         const messageOrder = ['introduction', 'research', 'projects', 'contact'];
@@ -619,9 +619,9 @@
         // New object mapping message keys to user messages
         const userMessages = {
             introduction: "Hi, could you please introduce yourself?",
-            research: "Can you tell me about his research interests?",
-            projects: "What has he been working on lately?",
-            contact: "How can I contact him?"
+            research: "Can you tell me about your research interests?",
+            projects: "What have you been working on lately?",
+            contact: "How can I contact you?"
         };
 
         // Variable to track if the user is at the bottom
@@ -924,7 +924,7 @@
             message.style.display = 'flex';
 
             // Initialize typing effect for header
-            const headerText = "You can see his recent work on:";
+            const headerText = "You can see my recent work on:";
             const speed = 50; // milliseconds per character
 
             await typeHtml(header, headerText, speed);
