@@ -38,7 +38,7 @@ See if you can spot the differences between versions!
 
 
 
-Icons are from:
+## Icons are from:
 
 https://iconduck.com/icons/163371/linkedin
 
