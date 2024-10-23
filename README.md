@@ -4,7 +4,7 @@ This site has two purposes:
 1. To display my research and academic career
 2. Show the rapid advancements and capabilities of AI.
 
-The idea was to see how far one can go by editing a single HTML file for creating a researcher CV page. The answer was quite far! Up to 6 hour version basically no knowledge of coding and very little knowledge about design was required. The "8-9 hours of work" version required some understanding of coding. The final version is the best I can do in a reasonable time frame. 
+The idea was to see how far one can go by editing a single HTML file for creating a researcher CV page. The answer was quite far! Up to 6 hour version basically no knowledge of coding and very little knowledge about design was required. The "8-9 hours of work" version required some understanding of coding. The final version is the best I can do in a reasonable time frame.  The AI used was `01-preview` from OpenAI. 
 
 See if you can spot the differences between versions!
 
