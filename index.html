@@ -585,7 +585,7 @@
             <!-- Input area -->
             <div class="input-container">
                 <!-- Text input for user's message -->
-                <input type="text" id="message-input" placeholder="Type your question about his work here...">
+                <input type="text" id="message-input" placeholder="Type your question about my work here...">
                 <!-- Send button with onclick event -->
                 <button id="send-button" onclick="sendMessage()">
                     <!-- Send icon -->
@@ -1080,9 +1080,9 @@
 
             // Handle Finnish messages
             if (
-                lowerCaseMessage === 'hei' || lowerCaseMessage.includes('hei.') || lowerCaseMessage.includes('hei!') ||
-                lowerCaseMessage === 'hej' || lowerCaseMessage.includes('hej.') || lowerCaseMessage.includes('hej!') ||
-                lowerCaseMessage === 'moi' || lowerCaseMessage.includes('moi.') || lowerCaseMessage.includes('moi!') ||
+                lowerCaseMessage === 'hei' || lowerCaseMessage.includes('hei.') || lowerCaseMessage.includes('hei!') || lowerCaseMessage.includes('hei,') ||
+                lowerCaseMessage === 'hej' || lowerCaseMessage.includes('hej.') || lowerCaseMessage.includes('hej!') || lowerCaseMessage.includes('hej,') ||
+                lowerCaseMessage === 'moi' || lowerCaseMessage.includes('moi.') || lowerCaseMessage.includes('moi!') || lowerCaseMessage.includes('moi,') ||
                 lowerCaseMessage.includes('voisit') || lowerCaseMessage.includes('voitko')
             ) {
                 await displayMessage("I'm sorry. Currently, I'm only able to understand English. Could you repeat your question in English?");
