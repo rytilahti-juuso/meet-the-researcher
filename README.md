@@ -10,30 +10,31 @@ See if you can spot the differences between versions!
 
 ## The final version (After ≈14 hours of work)
 
-https://rytilahti-juuso.github.io/meet-the-researcher/index.html
+
 
 - A lot of final polishing done by hand.
 - Problems with hallucination started to occur roughly after 1000 lines.
 - Wanted this to be copy-pastable as plain html, so that added complexity.
+- https://rytilahti-juuso.github.io/meet-the-researcher/index.html
 
 ## After 8-9 hours of work
 
-https://rytilahti-juuso.github.io/meet-the-researcher/8-9-hours-version.html
-
 - Mostly AI-made code, minor adjustements done by AI.
 - Presentable and could be used as is
+- https://rytilahti-juuso.github.io/meet-the-researcher/8-9-hours-version.html
 
 ## After 6 hours of work
 
 - All major features done by AI
 - Minor adjustements to css (e.g. animation timing) done by human.
-  Live version available at https://rytilahti-juuso.github.io/meet-the-researcher/6-hours-version.html
+  - Majority of the styling was still done by the AI. 
+- https://rytilahti-juuso.github.io/meet-the-researcher/6-hours-version.html
 
 ## After 4-hours of work
 
-Fully AI-generated
-
-https://rytilahti-juuso.github.io/meet-the-researcher/4-hours-version.html
+- Fully AI-generated.
+- Quite impressive for 4-hours
+- https://rytilahti-juuso.github.io/meet-the-researcher/4-hours-version.html
 
 
 
