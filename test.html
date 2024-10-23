@@ -183,7 +183,7 @@
         /* Messages container */
         .messages {
             flex-grow: 1;
-            overflow-y: auto;
+            overflow-y: hidden;
             display: none;
             padding: 1.25em;
             align-self: center;
@@ -193,7 +193,12 @@
             box-sizing: border-box;
         }
 
+       
+
         /* Scrollbar styling for the .messages container */
+        .messages:hover, .messages:active, .messages:focus{
+            overflow-y: auto;
+        }
         .messages {
             scrollbar-width: thin; /* For Firefox */
             scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color); /* For Firefox */
