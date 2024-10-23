@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Researcher Introduction Chat</title>
+    <!-- Responsive meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            /* Color Variables */
+            --color-primary: #007bff;
+            --color-primary-hover: #0056b3;
+            --color-primary-active: #004085;
+            --color-secondary: #333;
+            --color-secondary-light: #fff;
+            --color-background: #f5f5f5;
+            --color-background-secondary: #e9e9eb;
+            --color-background-secondary-hover: #d4d4d6;
+            --color-background-secondary-active: #bcbcc0;
+
+            /* Abstraction Layer Variables */
+            --tag-background-color: var(--color-primary);
+            --tag-text-color: var(--color-secondary-light);
+            --tag-hover-background-color: var(--color-primary-hover);
+            --tag-active-background-color: var(--color-primary-active);
+
+            --message-sent-background-color: var(--color-primary);
+            --message-sent-text-color: var(--color-secondary-light);
+            --message-received-background-color: var(--color-background-secondary);
+            --message-received-text-color: var(--color-secondary);
+
+            --input-background-color: var(--color-background-secondary);
+            --input-text-color: var(--color-secondary);
+            --input-placeholder-color: #999; /* Kept as is */
+
+            --send-button-background-color: var(--color-primary);
+            --send-button-text-color: var(--color-secondary-light);
+            --send-button-hover-background-color: var(--color-primary-hover);
+            --send-button-active-background-color: var(--color-primary-active);
+
+            --hero-background-color: #fff; /* Keeping original white */
+            --hero-text-color: var(--color-secondary);
+            --hero-heading-color: var(--color-primary);
+
+            --hero-background-color-active: var(--color-primary);
+            --hero-text-color-active: var(--color-secondary-light);
+
+            --tail-color-sent: var(--color-primary);
+            --tail-color-received: var(--color-background-secondary);
+        }
+
+        /* Reset default margins and padding, set default font and background color */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            background-color: var(--color-background);
+        }
+
+        /* Main chat container */
+        .chat-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            max-width: 100%;
+            margin: 0;
+            background-color: var(--hero-background-color);
+            transition: padding-top 0.5s ease;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3.125em 1.25em;
+            background-color: var(--hero-background-color);
+            transition: all 0.5s ease;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .hero-text {
+            text-align: center;
+            margin-right: 1.25em;
+            transition: all 0.5s ease;
+        }
+
+        .hero-text h2,
+        .hero-text h1 {
+            margin: 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero-text h2 {
+            font-size: 1.5em;
+            color: var(--hero-text-color);
+            animation-delay: 0.5s;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5em;
+            color: var(--hero-heading-color);
+            animation-delay: 1s;
+        }
+
+        .hero-image {
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 1.5s;
+        }
+
+        .hero-image img {
+            border-radius: 50%;
+            width: 30ch;
+            height: 30ch;
+            transition: all 0.5s ease;
+        }
+
+        /* Adjust hero section when chat is active */
+        .chat-container.active .hero-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.625em 1.25em;
+            background-color: var(--hero-background-color-active);
+            color: var(--hero-text-color-active);
+            z-index: 1000;
+        }
+
+        .chat-container.active .hero-content {
+            justify-content: flex-start;
+        }
+
+        .chat-container.active .hero-text {
+            text-align: center;
+            margin-right: 0.625em;
+        }
+
+        .chat-container.active .hero-text h2,
+        .chat-container.active .hero-text h1 {
+            color: var(--hero-text-color-active);
+            font-size: 1em;
+        }
+
+        .chat-container.active .hero-image img {
+            width: 5ch;
+            height: 5ch;
+        }
+
+        .chat-container.active {
+            padding-top: 70px; /* Adjust to match the height of the fixed hero-section */
+        }
+
+        /* Messages container */
+        .messages {
+            display: none;
+            flex-grow: 1;
+            padding: 1.25em;
+            overflow-y: auto;
+            max-width: 100ch;
+            width: 100%;
+            align-self: center;
+            background-color: var(--hero-background-color);
+        }
+
+        .chat-container.active .messages {
+            display: block;
+        }
+
+        /* Individual message styling */
+        .message {
+            display: none; /* Hide messages initially */
+            display: flex;
+            margin-bottom: 0.9375em;
+        }
+
+        /* Sent messages align to the right */
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        /* Message content styling */
+        .message .content {
+            max-width: 60ch;
+            width: auto;
+            padding: 0.625em 0.9375em;
+            border-radius: 1.25em;
+            background-color: var(--message-received-background-color);
+            color: var(--message-received-text-color);
+            position: relative;
+        }
+
+        /* Styling for sent messages */
+        .message.sent .content {
+            background-color: var(--message-sent-background-color);
+            color: var(--message-sent-text-color);
+        }
+
+        /* Message tail styling */
+        .message .content::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .message.received .content {
+            margin-right: 5ch;
+        }
+
+        /* Tail for received messages */
+        .message.received .content::after {
+            left: -0.625em;
+            border: 0.625em solid transparent;
+            border-top-color: var(--tail-color-received);
+            border-bottom: 0;
+            border-right: 0;
+            margin-left: -0.625em;
+            margin-bottom: -0.625em;
+        }
+
+        /* Tail for sent messages */
+        .message.sent .content::after {
+            right: -0.625em;
+            border: 0.625em solid transparent;
+            border-top-color: var(--tail-color-sent);
+            border-bottom: 0;
+            border-left: 0;
+            margin-right: -0.625em;
+            margin-bottom: -0.625em;
+        }
+
+        /* Tags container styling */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0.625em 1.25em;
+            background-color: var(--hero-background-color);
+        }
+
+        /* Tag buttons styling */
+        .tag-button {
+            background-color: var(--tag-background-color);
+            border: none;
+            border-radius: 1em;
+            padding: 0.5em 1em;
+            margin: 0.45em;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: var(--tag-text-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .tag-button:hover {
+            background-color: var(--tag-hover-background-color);
+            transform: scale(1.15);
+        }
+
+        .tag-button:active {
+            background-color: var(--tag-active-background-color);
+        }
+
+        /* Input container styling */
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Input container when chat is active */
+        .chat-container.active .input-container {
+            max-width: none;
+            margin: 0;
+            margin-bottom: 3ch;
+        }
+
+        /* Input field styling */
+        .input-container input[type="text"] {
+            flex: 1;
+            padding: 0.75em 1.25em;
+            border: none;
+            border-radius: 1.5em;
+            background-color: var(--input-background-color);
+            font-size: 1em;
+            color: var(--input-text-color);
+            outline: none;
+            max-width: 800px;
+        }
+
+        /* Placeholder text color */
+        .input-container input[type="text"]::placeholder {
+            color: var(--input-placeholder-color);
+        }
+
+        /* Send button styling */
+        .input-container button {
+            margin-left: 0.625em;
+            padding: 0.75em;
+            border: none;
+            background-color: var(--send-button-background-color);
+            color: var(--send-button-text-color);
+            border-radius: 50%;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-container button .send-icon {
+            display: inline-block;
+            transition: transform 0.5s ease;
+        }
+
+        /* Hover effect for send button */
+        .input-container button:hover {
+            background-color: var(--send-button-hover-background-color);
+        }
+
+        .input-container button:hover .send-icon {
+            transform: rotate(360deg);
+        }
+
+        /* Active effect for send button */
+        .input-container button:active {
+            background-color: var(--send-button-active-background-color);
+        }
+
+        .input-container button:active .send-icon {
+            transform: scale(0.9);
+        }
+
+        /* Animation for message appearance */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(1.25em);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.sent.appear,
+        .message.received.appear {
+            animation: fadeInUp 0.3s ease forwards;
+        }
+
+        /* Styling for social links message */
+        .message .content.social-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--message-received-background-color);
+            padding: 0.625em 0.9375em;
+            border-radius: 1.25em;
+            position: relative;
+        }
+
+        /* Adjust the tail for the social links bubble */
+        .message .content.social-links::after {
+            content: '';
+            position: absolute;
+            left: -0.625em;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border: 0.625em solid transparent;
+            border-top-color: var(--tail-color-received);
+            border-bottom: 0;
+            border-right: 0;
+            margin-left: -0.625em;
+            margin-bottom: -0.625em;
+        }
+
+        .message .content.social-links .header {
+            font-size: 1em;
+            margin-bottom: 0.625em;
+            width: 100%;
+            text-align: center;
+        }
+
+        .message .content.social-links .icons {
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInIcons 0.5s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .message .content.social-links a {
+            margin: 0 1em;
+        }
+
+        .message .content.social-links svg {
+            width: 5ch;
+            height: 5ch;
+            cursor: pointer;
+        }
+
+        /* Fade-in animation for icons */
+        @keyframes fadeInIcons {
+            from { opacity: 0; transform: translateY(0.625em); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .hero-text h2 {
+                font-size: 1.2em;
+            }
+
+            .hero-text h1 {
+                font-size: 2em;
+            }
+
+            .hero-image img {
+                width: 20ch;
+                height: 20ch;
+            }
+
+            .hero-section {
+                padding: 2em 1em;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Main chat container -->
+    <div class="chat-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2>Meet the Researcher</h2>
+                    <h1>John Doe</h1>
+                </div>
+                <div class="hero-image">
+                    <img src="https://eu.ui-avatars.com/api/?name=John+Doe&size=250" alt="John Doe">
+                </div>
+            </div>
+        </div>
+        <!-- Messages area -->
+        <div class="messages">
+            <!-- Messages will be dynamically added here -->
+        </div>
+        <!-- Tags container -->
+        <div class="tags-container">
+            <!-- Clickable tags -->
+            <button class="tag-button" data-message="introduction">Introduction</button>
+            <button class="tag-button" data-message="research">Research Interests</button>
+            <button class="tag-button" data-message="projects">Recent Projects</button>
+            <button class="tag-button" data-message="contact">Contact Information</button>
+        </div>
+        <!-- Input area -->
+        <div class="input-container">
+            <!-- Text input for user's message -->
+            <input type="text" id="message-input" placeholder="Type your message here...">
+            <!-- Send button with onclick event -->
+            <button id="send-button" onclick="sendMessage()">
+                <!-- Send icon -->
+                <span class="send-icon">&#10148;</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript for handling message sending and tag clicks -->
+    <script>
+        // Predefined messages corresponding to each tag
+        const predefinedMessages = {
+            introduction: "Hello! I'm Dr. Emily Smith, a neuroscientist at ABC University. I'd love to share more about my research with you.",
+            research: "Certainly! My primary research focuses on neuroplasticity and how the brain adapts after injury. I'm also interested in cognitive rehabilitation techniques.",
+            projects: "Recently, my team has been working on developing non-invasive brain stimulation methods to enhance recovery in stroke patients.",
+            contact: "You're welcome! Feel free to visit my lab's website at <a href='http://www.emilysmithlab.com'>www.emilysmithlab.com</a> or email me at emily.smith@abcuniversity.edu."
+        };
+
+        const messageOrder = ['introduction', 'research', 'projects', 'contact'];
+        let messagesSent = new Set();
+
+        // Mapping of keywords to message keys
+        const keywordsMap = {
+            introduction: ['intro', 'introduction'],
+            research: ['research'],
+            projects: ['project', 'projects'],
+            contact: ['contact']
+        };
+
+        // Function to get the next message key in order
+        function getNextMessageKey() {
+            for (let key of messageOrder) {
+                if (!messagesSent.has(key)) {
+                    return key;
+                }
+            }
+            return null; // All messages have been sent
+        }
+
+        // Function to embed the string at the beginning of a message
+        function embedString(messageText) {
+            return "That's a great question. On a related note " + messageText;
+        }
+
+        // Function to display a message with typing animation
+        function displayMessage(messageText) {
+            // Create a new message element
+            const message = document.createElement('div');
+            message.classList.add('message', 'received', 'appear'); // Received message with animation
+
+            const content = document.createElement('div');
+            content.classList.add('content');
+
+            // Append content to message
+            message.appendChild(content);
+
+            const messagesContainer = document.querySelector('.messages');
+            messagesContainer.appendChild(message);
+
+            // Show the message element
+            message.style.display = 'flex';
+
+            // Initialize typing effect
+            const speed = 35; // milliseconds per character
+
+            typeHtml(content, messageText, speed);
+
+            // Scroll to the bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Typing function that handles HTML content
+        function typeHtml(element, html, speed) {
+            let cursorPosition = 0,
+                tag = '',
+                writingTag = false,
+                tagOpen = false,
+                tempTypeSpeed = speed;
+
+            function type() {
+                if (writingTag) {
+                    tag += html[cursorPosition];
+                }
+
+                if (html[cursorPosition] === '<') {
+                    tempTypeSpeed = 0;
+                    writingTag = true;
+                    tag += html[cursorPosition];
+                } else if (html[cursorPosition] === '>') {
+                    tag += html[cursorPosition];
+                    writingTag = false;
+
+                    // Append the tag to the element
+                    element.innerHTML += tag;
+                    tag = '';
+                } else if (writingTag) {
+                    tag += html[cursorPosition];
+                } else {
+                    element.innerHTML += html[cursorPosition];
+                }
+
+                cursorPosition++;
+
+                if (cursorPosition < html.length) {
+                    setTimeout(type, tempTypeSpeed);
+                }
+            }
+
+            type();
+        }
+
+        // Function to display the user's message
+        function displayUserMessage(messageText) {
+            // Create a new message element
+            const message = document.createElement('div');
+            message.classList.add('message', 'sent', 'appear'); // Sent message with animation
+
+            // Create the content div and set its text
+            const content = document.createElement('div');
+            content.classList.add('content');
+            content.textContent = messageText;
+
+            // Append the content to the message element
+            message.appendChild(content);
+
+            // Append the message to the messages container
+            const messagesContainer = document.querySelector('.messages');
+            messagesContainer.appendChild(message);
+
+            // Scroll to the bottom to show the new message
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Function to display social links after contact information
+        function displaySocialLinks() {
+            // Create a new message element
+            const message = document.createElement('div');
+            message.classList.add('message', 'received', 'appear'); // Received message with animation
+
+            const content = document.createElement('div');
+            content.classList.add('content', 'social-links'); // Add 'social-links' class for styling
+
+            // Create header element
+            const header = document.createElement('div');
+            header.classList.add('header');
+            content.appendChild(header);
+
+            // Append content to message
+            message.appendChild(content);
+
+            const messagesContainer = document.querySelector('.messages');
+            messagesContainer.appendChild(message);
+
+            // Show the message element
+            message.style.display = 'flex';
+
+            // Initialize typing effect for header
+            const headerText = "Connect with me on:";
+            const speed = 50; // milliseconds per character
+
+            typeHtml(header, headerText, speed);
+
+            // SVG code for GitHub and LinkedIn icons
+            const githubSVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m0 0h24v24h-24z" fill="#fff" opacity="0" transform="matrix(-1 0 0 -1 24 24)"/><path d="m12 1a10.89 10.89 0 0 0 -11 10.77 10.79 10.79 0 0 0 7.52 10.23c.55.1.75-.23.75-.52s0-.93 0-1.83c-3.06.65-3.71-1.44-3.71-1.44a2.86 2.86 0 0 0 -1.22-1.58c-1-.66.08-.65.08-.65a2.31 2.31 0 0 1 1.68 1.11 2.37 2.37 0 0 0 3.2.89 2.33 2.33 0 0 1 .7-1.44c-2.44-.27-5-1.19-5-5.32a4.15 4.15 0 0 1 1.11-2.91 3.78 3.78 0 0 1 .11-2.84s.93-.29 3 1.1a10.68 10.68 0 0 1 5.5 0c2.1-1.39 3-1.1 3-1.1a3.78 3.78 0 0 1 .11 2.84 4.15 4.15 0 0 1 1.17 2.89c0 4.14-2.58 5.05-5 5.32a2.5 2.5 0 0 1 .75 2v2.95s.2.63.75.52a10.8 10.8 0 0 0 7.5-10.22 10.89 10.89 0 0 0 -11-10.77" fill="#231f20"/></svg>`;
+
+            const linkedinSVG = `<svg enable-background="new 0 0 112.196 112.196" viewBox="0 0 112.196 112.196" xmlns="http://www.w3.org/2000/svg"><circle cx="56.098" cy="56.097" fill="#007ab9" r="56.098"/><path d="m89.616 60.611v23.128h-13.409v-21.578c0-5.418-1.936-9.118-6.791-9.118-3.705 0-5.906 2.491-6.878 4.903-.353.862-.444 2.059-.444 3.268v22.524h-13.41s.18-36.546 0-40.329h13.411v5.715c-.027.045-.065.089-.089.132h.089v-.132c1.782-2.742 4.96-6.662 12.085-6.662 8.822 0 15.436 5.764 15.436 18.149zm-54.96-36.642c-4.587 0-7.588 3.011-7.588 6.967 0 3.872 2.914 6.97 7.412 6.97h.087c4.677 0 7.585-3.098 7.585-6.97-.089-3.956-2.908-6.967-7.496-6.967zm-6.791 59.77h13.405v-40.33h-13.405z" fill="#f1f2f2"/></svg>`;
+
+            // Create the SVG links
+            const githubLink = document.createElement('a');
+            githubLink.href = 'https://github.com';
+            githubLink.target = '_blank';
+            githubLink.innerHTML = githubSVG;
+
+            const linkedinLink = document.createElement('a');
+            linkedinLink.href = 'https://linkedin.com';
+            linkedinLink.target = '_blank';
+            linkedinLink.innerHTML = linkedinSVG;
+
+            // Create a container for the icons
+            const iconsContainer = document.createElement('div');
+            iconsContainer.classList.add('icons');
+            iconsContainer.appendChild(githubLink);
+            iconsContainer.appendChild(linkedinLink);
+
+            // Append the icons after the header typing effect
+            setTimeout(() => {
+                content.appendChild(iconsContainer);
+                // Scroll to the bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, headerText.length * speed + 500);
+
+            // Scroll to the bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Function to remove a tag button
+        function removeTagButton(messageKey) {
+            const button = document.querySelector(`.tag-button[data-message="${messageKey}"]`);
+            if (button) {
+                button.parentNode.removeChild(button);
+            }
+        }
+
+        // Function to activate chat view
+        function activateChat() {
+            const chatContainer = document.querySelector('.chat-container');
+            if (!chatContainer.classList.contains('active')) {
+                chatContainer.classList.add('active');
+            }
+        }
+
+        // Add event listeners to the tag buttons
+        const tagButtons = document.querySelectorAll('.tag-button');
+        tagButtons.forEach(button => {
+            button.addEventListener('click', function handleClick() {
+                const messageKey = button.getAttribute('data-message');
+                const messageText = predefinedMessages[messageKey];
+
+                // Get the label of the tag button to display in the user's message bubble
+                const userMessageText = button.textContent;
+
+                // Display the user's message bubble
+                displayUserMessage(userMessageText);
+
+                // Display the assistant's message with typing effect
+                displayMessage(messageText);
+
+                // Remove the clicked tag from the tag list
+                removeTagButton(messageKey);
+
+                // Add to messagesSent
+                messagesSent.add(messageKey);
+
+                // If the 'contact' tag is clicked, display the second message with SVGs
+                if (messageKey === 'contact') {
+                    // Delay the display of social links until after typing animation
+                    setTimeout(displaySocialLinks, messageText.length * 50 + 500);
+                }
+
+                // Activate the chat view with transition
+                activateChat();
+            });
+        });
+
+        function sendMessage() {
+            // Get the input field and its value
+            const input = document.getElementById('message-input');
+            const messageText = input.value.trim();
+
+            // If the input is empty, do nothing
+            if (messageText === '') {
+                return;
+            }
+
+            // Display the user's message
+            displayUserMessage(messageText);
+
+            // Clear the input field
+            input.value = '';
+
+            // Activate the chat view with transition
+            activateChat();
+
+            // Process the message
+            const lowerCaseMessage = messageText.toLowerCase();
+
+            let keywordFound = false;
+            for (let key in predefinedMessages) {
+                if (keywordsMap[key]) {
+                    for (let keyword of keywordsMap[key]) {
+                        if (lowerCaseMessage.includes(keyword)) {
+                            // Keyword found
+                            keywordFound = true;
+                            if (!messagesSent.has(key)) {
+                                displayMessage(predefinedMessages[key]);
+                                messagesSent.add(key);
+                                removeTagButton(key);
+
+                                // If the 'contact' message is sent, display social links
+                                if (key === 'contact') {
+                                    setTimeout(displaySocialLinks, predefinedMessages['contact'].length * 50 + 500);
+                                }
+                            } else {
+                                // Message already sent
+                                displayMessage("We've already discussed that topic.");
+                            }
+                            break;
+                        }
+                    }
+                    if (keywordFound) {
+                        break;
+                    }
+                }
+            }
+
+            if (!keywordFound) {
+                // No keywords matched
+                // Get the next message key
+                let nextKey = getNextMessageKey();
+
+                if (nextKey) {
+                    let message = predefinedMessages[nextKey];
+                    message = embedString(message);
+                    displayMessage(message);
+                    messagesSent.add(nextKey);
+                    removeTagButton(nextKey);
+
+                    // If the 'contact' message is sent, display social links
+                    if (nextKey === 'contact') {
+                        setTimeout(displaySocialLinks, predefinedMessages['contact'].length * 50 + 500);
+                    }
+                } else {
+                    // All messages have been sent
+                    displayMessage("We've discussed all the topics! Feel free to ask any further questions or explore the provided information.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>
