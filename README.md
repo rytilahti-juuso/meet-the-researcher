@@ -20,7 +20,7 @@ See if you can spot the differences between versions!
 ## After 8-9 hours of work
 
 - Mostly AI-made code, minor adjustements done by AI.
-- Presentable and could be used as is
+- Presentable and usable as is.
 - https://rytilahti-juuso.github.io/meet-the-researcher/8-9-hours-version.html
 
 ## After 6 hours of work
@@ -33,7 +33,7 @@ See if you can spot the differences between versions!
 ## After 4-hours of work
 
 - Fully AI-generated.
-- Quite impressive for 4-hours
+- Quite impressive result given the time frame.
 - https://rytilahti-juuso.github.io/meet-the-researcher/4-hours-version.html
 
 
