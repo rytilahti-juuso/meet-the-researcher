@@ -144,6 +144,7 @@
 
         .chat-container.active {
             box-sizing: border-box;
+            display: block;
         }
 
         /* Adjust hero section when chat is active */
@@ -204,39 +205,39 @@
         /* Scroll does not anymore require tapping on touch devices */
         @media (hover: none) and (pointer: coarse),
                (-webkit-hover: none) and (-webkit-pointer: coarse) {
-                .chat-container.active .messages {
+                .chat-container.active {
                 overflow-y: auto;
             }
         }
 
-        .chat-container.active .messages {
+        .chat-container.active {
             -webkit-overflow-scrolling: touch;
         }
 
         /* Scrollbar styling for the .messages container */
-        .messages:hover, .messages:active, .messages:focus{
+        .chat-container.active:hover, .chat-container.active:active, .chat-container.active:focus{
             overflow-y: auto;
         }
-        .messages {
+        .chat-container.active {
             scrollbar-width: thin; /* For Firefox */
             scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color); /* For Firefox */
         }
 
-        .messages::-webkit-scrollbar {
+        .chat-container.active::-webkit-scrollbar {
             width: 0.5em; /* Adjust the width as needed */
         }
 
-        .messages::-webkit-scrollbar-track {
+        .chat-container.active::-webkit-scrollbar-track {
             background: var(--scrollbar-track-color);
         }
 
-        .messages::-webkit-scrollbar-thumb {
+        .chat-container.active::-webkit-scrollbar-thumb {
             background-color: var(--scrollbar-thumb-color);
             border-radius: 1em; /* Rounded corners for the thumb */
             border: 0.125em solid var(--scrollbar-track-color);
         }
 
-        .messages::-webkit-scrollbar-thumb:hover {
+        .chat-container.active::-webkit-scrollbar-thumb:hover {
             background-color: var(--scrollbar-thumb-hover-color);
         }
 
@@ -246,6 +247,8 @@
             /* Adjust height to fit between hero and interaction containers */
             margin-top: 4em; /* Height of fixed hero-section + padding */
             margin-bottom: calc(5em + 1.25em); /* Height of interaction-container + padding */
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Individual message styling */
@@ -650,10 +653,11 @@
         // Get the messages container
         const messagesContainer = document.querySelector('.messages');
 
+        const chatContainer = document.querySelector('.chat-container');
         // Scroll event listener to update isAtBottom
-        messagesContainer.addEventListener('scroll', function() {
+        chatContainer.addEventListener('scroll', function() {
             const scrollThreshold = 20; // Adjust threshold as needed
-            if (messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight <= scrollThreshold) {
+            if (chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight <= scrollThreshold) {
                 isAtBottom = true;
             } else {
                 isAtBottom = false;
@@ -709,7 +713,7 @@
             // Scroll to bottom after the message is fully displayed
             if (isAtBottom) {
                 setTimeout(() => {
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
                 }, 0);
             }
         }
@@ -746,7 +750,7 @@
                         element.appendChild(newNode);
                         if (isAtBottom) {
                             setTimeout(() => {
-                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                                chatContainer.scrollTop = chatContainer.scrollHeight;
                             }, 0);
                         }
 
@@ -777,7 +781,7 @@
                         parentElement.appendChild(document.createTextNode(text[index]));
                         if (isAtBottom) {
                             setTimeout(() => {
-                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                                chatContainer.scrollTop = chatContainer.scrollHeight;
                             }, 0);
                         }
                         // Check if the current character is "!"
@@ -857,7 +861,7 @@
 
             // Scroll to the bottom to show the new message
             setTimeout(() => {
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             }, 0);
         }
 
@@ -916,7 +920,7 @@
             // Scroll to the bottom if user is at the bottom
             if (isAtBottom) {
                 setTimeout(() => {
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
                 }, 0);
             }
         }
@@ -977,7 +981,7 @@
             // Scroll to the bottom if user is at the bottom
             if (isAtBottom) {
                 setTimeout(() => {
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
                 }, 0);
             }
         }
