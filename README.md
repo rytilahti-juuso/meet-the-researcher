@@ -9,33 +9,33 @@ The idea was to see how far one can go by editing a single HTML file for creatin
 
 See if you can spot the differences between versions!
 
-## The final version (After ≈17 hours of work)
+## The final version (after ≈17 hours of work)
 
-- A lot of final polishing done by hand.
+- A lot of final polishing was done by hand.
 - Development time would probably be 2 hours left, if I would have not decided to try fix "one more thing" while very tired.
 - Problems with hallucination started to occur roughly after 1000 lines.
-- Wanted this to be copy-pastable as plain html, so that added complexity.
+I wanted this to be copy-pastable as plain HTML so that added complexity.
 - Most of the additional time compared to "≈10 hours"-version went went in little things.
   - Scrolling issues on phones were a pain.
 - https://rytilahti-juuso.github.io/meet-the-researcher/index.html
 
 ## After ≈10 hours of work
 
-- Mostly AI-made code, minor adjustements done by human.
+- Mostly AI-made code, with minor adjustments done by human.
 - Presentable and usable (almost) as is.
 - https://rytilahti-juuso.github.io/meet-the-researcher/10-hours-version.html
 
 ## After 6 hours of work
 
 - All major features done by AI
-- Minor adjustements to css (e.g. animation timing) done by human.
-  - Majority of the styling was still done by the AI.
+- Minor adjustments to CSS (e.g. animation timing) done by human.
+  The majority of the styling was still done by the AI.
 - https://rytilahti-juuso.github.io/meet-the-researcher/6-hours-version.html
 
 ## After 4-hours of work
 
 - Fully AI-generated.
-- Quite impressive result given the time frame.
+- A quite impressive result given the time frame.
 - https://rytilahti-juuso.github.io/meet-the-researcher/4-hours-version.html
 
 ## Icons are from:
