@@ -8,13 +8,16 @@ The idea was to see how far one can go by editing a single HTML file for creatin
 
 See if you can spot the differences between versions!
 
-## The final version (After ≈14 hours of work)
+## The final version (After ≈16 hours of work)
 
 
 
 - A lot of final polishing done by hand.
 - Problems with hallucination started to occur roughly after 1000 lines.
 - Wanted this to be copy-pastable as plain html, so that added complexity.
+- Biggest time after went in little things.
+  - First message should start from the left (and not the center).
+  - Scrolling issues on phones were a pain.
 - https://rytilahti-juuso.github.io/meet-the-researcher/index.html
 
 ## After 8-9 hours of work
