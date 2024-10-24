@@ -200,9 +200,13 @@
         /* Scroll does not anymore require tapping on touch devices */
         @media (hover: none) and (pointer: coarse),
                (-webkit-hover: none) and (-webkit-pointer: coarse) {
-            .messages {
+                .chat-container.active .messages {
                 overflow-y: auto;
             }
+        }
+
+        .chat-container.active .messages {
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Scrollbar styling for the .messages container */
